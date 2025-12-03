@@ -528,9 +528,17 @@ body {
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
 }
 
+.gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
 .current-gallery h2 {
     color: var(--clr-primary);
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -538,7 +546,27 @@ body {
 
 .gallery-note {
     color: #666;
-    margin-bottom: 1.5rem;
+    margin: 0;
+}
+
+.btn-delete-all {
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.btn-delete-all:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(244, 67, 54, 0.4);
 }
 
 .gallery-grid {
@@ -646,6 +674,16 @@ body {
     
     .btn-clear, .btn-upload-cloud,
     .btn-view-gallery, .btn-upload-more {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .gallery-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .btn-delete-all {
         width: 100%;
         justify-content: center;
     }

@@ -125,8 +125,15 @@
 
             <!-- Current Gallery -->
             <div class="current-gallery">
-                <h2><i class="fa fa-images"></i> Current Website Photos</h2>
-                <p class="gallery-note">These photos are currently showing on your gallery page</p>
+                <div class="gallery-header">
+                    <div>
+                        <h2><i class="fa fa-images"></i> Current Website Photos</h2>
+                        <p class="gallery-note">These photos are currently showing on your gallery page</p>
+                    </div>
+                    <button onclick="deleteAllPhotos()" class="btn-delete-all" id="deleteAllBtn" style="display: none;">
+                        <i class="fa fa-trash-alt"></i> Delete All Photos
+                    </button>
+                </div>
                 
                 <div id="galleryGrid" class="gallery-grid">
                     <!-- Photos will load here dynamically -->

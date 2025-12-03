@@ -194,12 +194,17 @@ async function saveGalleryData(newImages) {
 // Load Gallery
 async function loadGallery() {
     const galleryGrid = document.getElementById('galleryGrid');
+    const deleteAllBtn = document.getElementById('deleteAllBtn');
     const galleryData = JSON.parse(localStorage.getItem(GALLERY_DATA_FILE) || '[]');
     
     if (galleryData.length === 0) {
         galleryGrid.innerHTML = '<p class="no-images">No photos uploaded yet. Upload your first photos above!</p>';
+        deleteAllBtn.style.display = 'none';
         return;
     }
+    
+    // Show delete all button
+    deleteAllBtn.style.display = 'flex';
     
     galleryGrid.innerHTML = '';
     galleryData.forEach((img, index) => {
@@ -209,7 +214,7 @@ async function loadGallery() {
             <img src="${img.thumb}" alt="${img.title}">
             <div class="gallery-item-overlay">
                 <p>${img.title}</p>
-                <button onclick="deleteImage(${index})" class="delete-btn" title="Delete">
+                <button onclick="deleteImage(${index})" class="delete-btn" title="Delete this photo">
                     <i class="fa fa-trash"></i>
                 </button>
             </div>
@@ -220,11 +225,15 @@ async function loadGallery() {
 
 // Delete Image
 function deleteImage(index) {
-    if (confirm('Delete this photo from gallery?')) {
+    if (confirm('🗑️ Delete this photo from gallery?\n\nThis will remove it from your website immediately.')) {
         let galleryData = JSON.parse(localStorage.getItem(GALLERY_DATA_FILE) || '[]');
+        const deletedPhoto = galleryData[index];
         galleryData.splice(index, 1);
         localStorage.setItem(GALLERY_DATA_FILE, JSON.stringify(galleryData));
         loadGallery();
+        
+        // Show success message
+        alert(`✓ Photo "${deletedPhoto.title}" deleted successfully!`);
     }
 }
 
@@ -241,4 +250,23 @@ function resetUpload() {
     document.getElementById('successMessage').style.display = 'none';
     document.getElementById('previewArea').style.display = 'none';
     clearImages();
+}
+
+// Delete All Photos
+function deleteAllPhotos() {
+    const galleryData = JSON.parse(localStorage.getItem(GALLERY_DATA_FILE) || '[]');
+    const photoCount = galleryData.length;
+    
+    if (photoCount === 0) {
+        alert('⚠️ No photos to delete!');
+        return;
+    }
+    
+    if (confirm(`🗑️ Delete ALL ${photoCount} photos from gallery?\n\n⚠️ WARNING: This cannot be undone!\n\nAll photos will be removed from your website immediately.`)) {
+        if (confirm(`Are you absolutely sure?\n\nThis will delete ${photoCount} photo${photoCount > 1 ? 's' : ''} permanently!`)) {
+            localStorage.removeItem(GALLERY_DATA_FILE);
+            loadGallery();
+            alert(`✓ All ${photoCount} photos deleted successfully!`);
+        }
+    }
 }
