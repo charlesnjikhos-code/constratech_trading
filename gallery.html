@@ -20,11 +20,11 @@
            </div>
            <div>
              <ul class="navlinks" id="menu">
-               <li><a href="index.html" class="Nav__link">home</a></li>
-               <li><a href="index.html" class="Nav__link">about us</a></li>
-               <li><a href="index.html" class="Nav__link">services</a></li>
-               <li><a href="index.html" class="Nav__link">portfolio</a></li>
-               <li><a href="index.html" class="Nav__link">Reach us</a></li>
+               <li><a href="index.html#home" class="Nav__link">home</a></li>
+               <li><a href="index.html#about" class="Nav__link">about us</a></li>
+               <li><a href="index.html#services" class="Nav__link">services</a></li>
+               <li><a href="index.html#portfolio" class="Nav__link">portfolio</a></li>
+               <li><a href="contact.html" class="Nav__link">contact</a></li>
        </ul>
            </div>
            
@@ -38,11 +38,11 @@
     <!--Mobile Nav-->
     <nav class="mobile-nav">
    <ul>
-        <a href="index.html" class="nav__link">Home</a>
-        <a href="index.html" class="nav__link">About Us</a>
-        <a href="index.html" class="nav__link">Services</a>
-        <a href="index.html" class="nav__link">Portfolio</a>
-        <a href="index.html" class="nav__link" >Reach us</a>
+        <a href="index.html#home" class="nav__link">Home</a>
+        <a href="index.html#about" class="nav__link">About Us</a>
+        <a href="index.html#services" class="nav__link">Services</a>
+        <a href="index.html#portfolio" class="nav__link">Portfolio</a>
+        <a href="contact.html" class="nav__link">Contact</a>
   </ul>
     </nav>
      <!--Gallery content-->
@@ -137,40 +137,92 @@
         </div>
         <div class="footer-container">
             
-            
-            <div class="footer-column">
-           
-            <div class="contact-map">
-                <h3>Visit Us</h3>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3838.753983336556!2d35.02510067469626!3d-15.81692098482656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x18d845e52bf54eb5%3A0x72bac9cf1666ef33!2sSt%20Columba%20CCAP%20Church!5e0!3m2!1sen!2smw!4v1681976134934!5m2!1sen!2smw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
-            <ul class="media_links">
-              <li></li>
+        <div class="footer-main">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <img src="img/logo.jpg" alt="Constratech Trading">
+                    </div>
+                    <p class="footer-description">
+                        Leading construction and solar power solutions provider in Malawi since 2015.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
 
-            </ul>
-          </div>
-          
-          <div class="footer-column" id="contact">
-            <h3>Get in touch</h3>
-            
-                <ul>
-                    <li><a href=""><i class="fa fa-phone-square" aria-hidden="true"></i></i> +265 99 587 7024 </a></li>
-                    <li> <a href="mailto: info@constratechtrading.com  "><i class="fa-sharp fa-regular fa-envelope"></i>info@constratechtrading.com  </a></li>
-                    <li> <i class="fa fa-map-pin" aria-hidden="true"></i> House NP/337, Old Naperi, Blantyre</li>
-                </ul>
-                <div class="footlogo">
-                    <img src="img/logo.jpg" alt="">
-                </div> 
-            
-          </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html#home">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="index.html#portfolio">Portfolio</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html#services">General Contracting</a></li>
+                        <li><a href="index.html#services">Concept & Design</a></li>
+                        <li><a href="index.html#services">Solar Power Solutions</a></li>
+                        <li><a href="index.html#services">Construction Consulting</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <ul class="footer-contact">
+                        <li>
+                            <i class="fa fa-map-marker"></i>
+                            <span>House NP/337, Old Naperi, Blantyre</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-phone"></i>
+                            <span>+265 99 587 7024</span>
+                        </li>
+                        <li>
+                            <i class="fa fa-envelope"></i>
+                            <span>info@constratechtrading.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="footer-copyright">
-          Copyright &copy; 2023 constratech trading. All rights reserved.
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 Constratech Trading. All rights reserved.</p>
         </div>
         
       </footer>
       
 <script src="lightbox-plus-jquery.js"></script>
+<script>
+// Load cloud-uploaded photos into gallery
+document.addEventListener('DOMContentLoaded', function() {
+    const galleryData = JSON.parse(localStorage.getItem('gallery-data.json') || '[]');
+    
+    if (galleryData.length > 0) {
+        const photoGallery = document.querySelector('.photo-gallery');
+        
+        // Add uploaded cloud photos at the beginning
+        galleryData.forEach(photo => {
+            const photoDiv = document.createElement('div');
+            photoDiv.className = 'photo uploaded-cloud';
+            photoDiv.innerHTML = `
+                <a href="${photo.url}" data-lightbox="models" data-title="${photo.title}">
+                    <img src="${photo.thumb}" alt="${photo.title}">
+                </a>
+            `;
+            photoGallery.insertBefore(photoDiv, photoGallery.firstChild);
+        });
+    }
+});
+</script>
 </body>
 <script src="index.js"></script>
 
