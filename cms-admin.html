@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS Admin - Constratech Trading</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="cms-admin.css">
+    <script>
+        // Check PHP session authentication
+        async function checkAuth() {
+            try {
+                const response = await fetch('api/auth.php?action=check');
+                const result = await response.json();
+                
+                if (!result.success) {
+                    window.location.href = 'cms-login.html';
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                window.location.href = 'cms-login.html';
+            }
+        }
+        
+        // Run auth check immediately
+        checkAuth();
+    </script>
+</head>
+<body>
+    <div class="cms-container">
+        <!-- Sidebar -->
+        <aside class="cms-sidebar">
+            <div class="cms-logo">
+                <i class="fas fa-cog"></i>
+                <h2>CMS Admin</h2>
+            </div>
+            
+            <nav class="cms-nav">
+                <a href="#" class="cms-nav-link active" data-section="dashboard">
+                    <i class="fas fa-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="cms-nav-link" data-section="company">
+                    <i class="fas fa-building"></i>
+                    <span>Company Info</span>
+                </a>
+                <a href="#" class="cms-nav-link" data-section="hero">
+                    <i class="fas fa-image"></i>
+                    <span>Hero Section</span>
+                </a>
+                <a href="#" class="cms-nav-link" data-section="about">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About Section</span>
+                </a>
+                <a href="#" class="cms-nav-link" data-section="services">
+                    <i class="fas fa-cogs"></i>
+                    <span>Services</span>
+                </a>
+                <a href="#" class="cms-nav-link" data-section="portfolio">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Portfolio</span>
+                </a>
+                <a href="#" class="cms-nav-link" data-section="contact">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact</span>
+                </a>
+                <a href="#" class="cms-nav-link" data-section="footer">
+                    <i class="fas fa-align-center"></i>
+                    <span>Footer</span>
+                </a>
+                <a href="#" class="cms-nav-link" data-section="users">
+                    <i class="fas fa-users"></i>
+                    <span>User Management</span>
+                </a>
+                <a href="#" class="cms-nav-link" data-section="help">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Help & FAQ</span>
+                </a>
+            </nav>
+
+            <div class="cms-actions">
+                <button class="btn-secondary" id="exportBtn">
+                    <i class="fas fa-download"></i> Export Data
+                </button>
+                <button class="btn-secondary" id="importBtn">
+                    <i class="fas fa-upload"></i> Import Data
+                </button>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+                <button class="btn-danger" id="resetBtn">
+                    <i class="fas fa-redo"></i> Reset to Default
+                </button>
+                <button class="btn-secondary" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+
+            <a href="index.html" class="view-site-btn" target="_blank">
+                <i class="fas fa-external-link-alt"></i> View Website
+            </a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="cms-main">
+            <header class="cms-header">
+                <h1 id="sectionTitle">Dashboard</h1>
+                <div class="header-actions">
+                    <button class="btn-secondary" id="refreshPreviewBtn" title="Refresh website to see changes">
+                        <i class="fas fa-sync"></i> Refresh Preview
+                    </button>
+                    <button class="btn-success" id="saveAllBtn">
+                        <i class="fas fa-save"></i> Save All Changes
+                    </button>
+                </div>
+            </header>
+
+            <div class="cms-content">
+                <!-- Dashboard Section -->
+                <section id="dashboard-section" class="content-section active">
+                    <div class="dashboard-grid">
+                        <div class="dashboard-card">
+                            <i class="fas fa-edit"></i>
+                            <h3>Quick Edit</h3>
+                            <p>Manage your website content easily</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <i class="fas fa-image"></i>
+                            <h3>Media Ready</h3>
+                            <p>Update images and media content</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h3>Responsive</h3>
+                            <p>All changes work on all devices</p>
+                        </div>
+                        <div class="dashboard-card">
+                            <i class="fas fa-sync"></i>
+                            <h3>Live Updates</h3>
+                            <p>Changes reflect immediately</p>
+                        </div>
+                    </div>
+
+                    <div class="welcome-message">
+                        <h2>Welcome to Constratech Trading CMS</h2>
+                        <p>Manage all your website content from this central dashboard. Select a section from the sidebar to start editing.</p>
+                        
+                        <div class="info-box" style="margin-top: 2rem; padding: 1.5rem; background: #dbeafe; border-left: 4px solid #3b82f6; border-radius: 8px;">
+                            <h3 style="margin-top: 0; color: #1e40af;">
+                                <i class="fas fa-info-circle"></i> How to See Your Changes
+                            </h3>
+                            <ol style="color: #1e40af; line-height: 1.8;">
+                                <li><strong>Edit content</strong> in any section (Company Info, Hero, Services, etc.)</li>
+                                <li><strong>Click "Save"</strong> button at the bottom of each section</li>
+                                <li><strong>Click "Refresh Preview"</strong> button at the top to open/refresh the website</li>
+                                <li>Your changes will appear instantly on the website!</li>
+                            </ol>
+                            <p style="margin-bottom: 0; color: #1e40af;">
+                                <strong>Tip:</strong> Keep both the CMS and website tabs open side-by-side to see changes in real-time.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Company Info Section -->
+                <section id="company-section" class="content-section">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Company Name</label>
+                            <input type="text" id="companyName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Tagline</label>
+                            <input type="text" id="companyTagline" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="companyPhone" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="companyEmail" class="form-control">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Physical Address</label>
+                            <textarea id="companyAddress" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Logo Path</label>
+                            <input type="text" id="companyLogo" class="form-control">
+                        </div>
+                    </div>
+                    <button class="btn-primary save-section" data-section="company">
+                        <i class="fas fa-save"></i> Save Company Info
+                    </button>
+                </section>
+
+                <!-- Hero Section -->
+                <section id="hero-section" class="content-section">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Hero Title</label>
+                            <input type="text" id="heroTitle" class="form-control">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Subtitle</label>
+                            <input type="text" id="heroSubtitle" class="form-control">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Description</label>
+                            <textarea id="heroDescription" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>CTA Button Text</label>
+                            <input type="text" id="heroCtaText" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>CTA Button Link</label>
+                            <input type="text" id="heroCtaLink" class="form-control">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Background Image Path</label>
+                            <input type="text" id="heroBackgroundImage" class="form-control">
+                        </div>
+                    </div>
+                    <button class="btn-primary save-section" data-section="hero">
+                        <i class="fas fa-save"></i> Save Hero Section
+                    </button>
+                </section>
+
+                <!-- About Section -->
+                <section id="about-section" class="content-section">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>About Title</label>
+                            <input type="text" id="aboutTitle" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Subtitle</label>
+                            <input type="text" id="aboutSubtitle" class="form-control">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Description</label>
+                            <textarea id="aboutDescription" class="form-control" rows="4"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>About Image Path</label>
+                            <input type="text" id="aboutImage" class="form-control">
+                        </div>
+                    </div>
+
+                    <h3 class="subsection-title">Feature Boxes</h3>
+                    <div id="featuresContainer"></div>
+                    
+                    <button class="btn-primary save-section" data-section="about">
+                        <i class="fas fa-save"></i> Save About Section
+                    </button>
+                </section>
+
+                <!-- Services Section -->
+                <section id="services-section" class="content-section">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Services Title</label>
+                            <input type="text" id="servicesTitle" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Subtitle</label>
+                            <input type="text" id="servicesSubtitle" class="form-control">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Description</label>
+                            <textarea id="servicesDescription" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <h3 class="subsection-title">Service Items</h3>
+                    <div id="servicesContainer"></div>
+                    <button class="btn-secondary" id="addServiceBtn">
+                        <i class="fas fa-plus"></i> Add Service
+                    </button>
+                    
+                    <button class="btn-primary save-section" data-section="services">
+                        <i class="fas fa-save"></i> Save Services
+                    </button>
+                </section>
+
+                <!-- Portfolio Section -->
+                <section id="portfolio-section" class="content-section">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Portfolio Title</label>
+                            <input type="text" id="portfolioTitle" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Subtitle</label>
+                            <input type="text" id="portfolioSubtitle" class="form-control">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Description</label>
+                            <textarea id="portfolioDescription" class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <h3 class="subsection-title">Featured Project</h3>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Image</label>
+                            <div class="image-upload-group">
+                                <input type="text" id="featuredImage" class="form-control" placeholder="Image path" readonly>
+                                <input type="file" id="featuredImageUpload" accept="image/*" style="display: none;">
+                                <button type="button" class="btn-secondary upload-btn" onclick="document.getElementById('featuredImageUpload').click()">
+                                    <i class="fas fa-upload"></i> Upload Image
+                                </button>
+                                <div class="image-preview" id="featuredImagePreview"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <input type="text" id="featuredCategory" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="featuredTitle" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" id="featuredDescription" class="form-control">
+                        </div>
+                    </div>
+
+                    <h3 class="subsection-title">Portfolio Projects</h3>
+                    <div id="projectsContainer"></div>
+                    <button class="btn-secondary" id="addProjectBtn">
+                        <i class="fas fa-plus"></i> Add Project
+                    </button>
+                    
+                    <button class="btn-primary save-section" data-section="portfolio">
+                        <i class="fas fa-save"></i> Save Portfolio
+                    </button>
+                </section>
+
+                <!-- Contact Section -->
+                <section id="contact-section" class="content-section">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Contact Title</label>
+                            <input type="text" id="contactTitle" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Subtitle</label>
+                            <input type="text" id="contactSubtitle" class="form-control">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Description</label>
+                            <textarea id="contactDescription" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Form Submission Email</label>
+                            <input type="email" id="contactFormEmail" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary save-section" data-section="contact">
+                        <i class="fas fa-save"></i> Save Contact Info
+                    </button>
+                </section>
+
+                <!-- Footer Section -->
+                <section id="footer-section" class="content-section">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Footer Description</label>
+                            <textarea id="footerDescription" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Copyright Text</label>
+                            <input type="text" id="footerCopyright" class="form-control">
+                        </div>
+                    </div>
+
+                    <h3 class="subsection-title">Social Media Links</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label><i class="fab fa-facebook"></i> Facebook</label>
+                            <input type="url" id="socialFacebook" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-twitter"></i> Twitter</label>
+                            <input type="url" id="socialTwitter" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-linkedin"></i> LinkedIn</label>
+                            <input type="url" id="socialLinkedin" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fab fa-instagram"></i> Instagram</label>
+                            <input type="url" id="socialInstagram" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary save-section" data-section="footer">
+                        <i class="fas fa-save"></i> Save Footer
+                    </button>
+                </section>
+
+                <!-- User Management Section -->
+                <section id="users-section" class="content-section">
+                    <div class="users-header">
+                        <h2><i class="fas fa-users"></i> User Management</h2>
+                        <p>Manage admin users and permissions</p>
+                    </div>
+
+                    <div class="users-actions">
+                        <button class="btn-primary" id="refreshUsersBtn">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+
+                    <div id="usersContainer" class="users-grid">
+                        <!-- Users will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- Help & FAQ Section -->
+                <section id="help-section" class="content-section">
+                    <div class="help-header">
+                        <h2><i class="fas fa-life-ring"></i> Help & User Guide</h2>
+                        <p>Find answers to common questions and learn how to use the CMS effectively</p>
+                    </div>
+
+                    <div class="help-search">
+                        <input type="text" id="helpSearch" class="form-control" placeholder="🔍 Search for help...">
+                    </div>
+
+                    <div class="help-categories">
+                        <button class="help-cat-btn active" data-category="all">
+                            <i class="fas fa-th"></i> All Topics
+                        </button>
+                        <button class="help-cat-btn" data-category="getting-started">
+                            <i class="fas fa-rocket"></i> Getting Started
+                        </button>
+                        <button class="help-cat-btn" data-category="login">
+                            <i class="fas fa-key"></i> Login
+                        </button>
+                        <button class="help-cat-btn" data-category="content">
+                            <i class="fas fa-edit"></i> Content
+                        </button>
+                        <button class="help-cat-btn" data-category="images">
+                            <i class="fas fa-image"></i> Images
+                        </button>
+                        <button class="help-cat-btn" data-category="portfolio">
+                            <i class="fas fa-briefcase"></i> Portfolio
+                        </button>
+                        <button class="help-cat-btn" data-category="troubleshooting">
+                            <i class="fas fa-wrench"></i> Troubleshooting
+                        </button>
+                    </div>
+
+                    <div id="helpContent" class="help-content">
+                        <!-- Content will be loaded here by JavaScript -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Success Toast -->
+    <div class="toast" id="successToast">
+        <i class="fas fa-check-circle"></i>
+        <span>Changes saved successfully!</span>
+    </div>
+
+    <script src="cms.js"></script>
+    <script src="cms-admin.js"></script>
+</body>
+</html>

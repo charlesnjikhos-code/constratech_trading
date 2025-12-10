@@ -16,36 +16,92 @@
     <meta name="description" content="Get in touch with Constratech Trading. Contact us for construction services, solar solutions, and expert consulting in Malawi.">
 </head>
 <body>
-    <header>
+    <header class="main-header">
         <nav class="navbar" id="nav-top">
-            <div class="logo">
-               <a href="index.html"><img class="img-logo" src="img/logo.jpg" alt="Constratech Trading logo"></a>
-           </div>
-           <div>
-             <ul class="navlinks" id="menu">
-               <li><a href="index.html#home" class="Nav__link">home</a></li>
-               <li><a href="about.html" class="Nav__link">about us</a></li>
-               <li><a href="index.html#services" class="Nav__link">services</a></li>
-               <li><a href="index.html#portfolio" class="Nav__link">portfolio</a></li>
-               <li><a href="contact.html" class="Nav__link active">contact</a></li>
-       </ul>
-           </div>
-           
-          <button class="hamburger">
-           <span class="bar"></span>
-       </button>
-       </nav>
+            <div class="nav-container">
+                <div class="logo">
+                    <a href="index.html">
+                        <img class="img-logo" src="img/logo.jpg" alt="Constratech Trading">
+                    </a>
+                </div>
+                
+                <ul class="nav-menu" id="menu">
+                    <li class="nav-item">
+                        <a href="index.html#home" class="nav-link">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">
+                            <i class="fas fa-info-circle"></i>
+                            <span>About</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#services" class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <span>Services</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#portfolio" class="nav-link">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Portfolio</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-cta">
+                        <a href="contact.html" class="nav-link nav-link-cta">
+                            <i class="fas fa-envelope"></i>
+                            <span>Contact Us</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <button class="hamburger" aria-label="Toggle menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </nav>
     </header>
     
     <!--Mobile Nav-->
+    <div class="mobile-nav-overlay"></div>
     <nav class="mobile-nav">
-   <ul>
-        <a href="index.html#home" class="nav__link">Home</a>
-        <a href="about.html" class="nav__link">About Us</a>
-        <a href="index.html#services" class="nav__link">Services</a>
-        <a href="index.html#portfolio" class="nav__link">Portfolio</a>
-        <a href="contact.html" class="nav__link active">Contact</a>
-  </ul>
+        <ul>
+            <li>
+                <a href="index.html#home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="about.html">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About Us</span>
+                </a>
+            </li>
+            <li>
+                <a href="index.html#services">
+                    <i class="fas fa-cogs"></i>
+                    <span>Services</span>
+                </a>
+            </li>
+            <li>
+                <a href="index.html#portfolio">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Portfolio</span>
+                </a>
+            </li>
+            <li>
+                <a href="contact.html">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact Us</span>
+                </a>
+            </li>
+        </ul>
     </nav>
 
     <!-- Contact Hero Section -->
@@ -110,12 +166,9 @@
                 <!-- Form Status Messages -->
                 <div id="formMessage" class="form-message" style="display: none;"></div>
                 
-                <form class="contact-form" id="contactForm" action="https://formsubmit.co/info@constratechtrading.com" method="POST">
-                    <!-- FormSubmit Configuration -->
-                    <input type="hidden" name="_subject" value="New Contact Form Submission - Constratech Trading">
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_template" value="table">
-                    <input type="text" name="_honey" style="display:none">
+                <form class="contact-form" id="contactForm">
+                    <!-- Honeypot for spam protection -->
+                    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
                     
                     <div class="form-row">
                         <div class="form-group">
@@ -252,61 +305,76 @@
 
     <script src="index.js"></script>
     <script>
-        // Enhanced Form submission handler
+        // Professional Contact Form Handler
         const contactForm = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
         const formMessage = document.getElementById('formMessage');
         const btnText = submitBtn.querySelector('.btn-text');
         const btnLoading = submitBtn.querySelector('.btn-loading');
 
-        // Check for URL parameters (success/error from FormSubmit redirect)
-        window.addEventListener('load', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('success')) {
-                showMessage('success', 'Thank you! Your message has been sent successfully. We will get back to you soon.');
-                // Clear the URL parameters
-                window.history.replaceState({}, document.title, window.location.pathname);
+        contactForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Check honeypot (spam protection)
+            if (contactForm._honey.value !== '') {
+                return; // Spam bot detected
             }
-        });
-
-        contactForm.addEventListener('submit', function(e) {
+            
             // Show loading state
             btnText.style.display = 'none';
             btnLoading.style.display = 'inline';
             submitBtn.disabled = true;
-            
-            // Hide any previous messages
             formMessage.style.display = 'none';
             
-            // For demonstration: If FormSubmit is not configured yet, prevent default
-            // Remove the lines below once FormSubmit is properly set up
-            const useFormSubmit = true; // Change to true to enable FormSubmit
+            // Get form data
+            const formData = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                subject: document.getElementById('subject').value.trim(),
+                service: document.getElementById('service').value,
+                message: document.getElementById('message').value.trim()
+            };
             
-            if (!useFormSubmit) {
-                e.preventDefault();
+            try {
+                const response = await fetch('api/contact-v3.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
                 
-                // Simulate sending (for demo purposes)
-                setTimeout(() => {
-                    showMessage('success', 'Thank you! Your message has been received. We will contact you soon.');
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('success', result.message);
                     contactForm.reset();
-                    resetButton();
-                }, 1500);
+                } else {
+                    showMessage('error', result.message || 'An error occurred. Please try again.');
+                }
+                
+            } catch (error) {
+                console.error('Form submission error:', error);
+                showMessage('error', 'Unable to send message. Please try again or contact us directly.');
+            } finally {
+                resetButton();
             }
-            // If useFormSubmit is true, the form will submit normally to FormSubmit
         });
 
         function showMessage(type, text) {
             formMessage.className = 'form-message form-message-' + type;
             formMessage.textContent = text;
             formMessage.style.display = 'block';
-            
-            // Scroll to message
             formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             
-            // Auto hide after 8 seconds
-            setTimeout(() => {
-                formMessage.style.display = 'none';
-            }, 8000);
+            // Auto hide success messages after 8 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    formMessage.style.display = 'none';
+                }, 8000);
+            }
         }
 
         function resetButton() {
@@ -315,23 +383,37 @@
             submitBtn.disabled = false;
         }
 
-        // Form validation feedback
+        // Real-time form validation feedback
         const formInputs = contactForm.querySelectorAll('input[required], textarea[required]');
         formInputs.forEach(input => {
             input.addEventListener('blur', function() {
                 if (this.value.trim() === '') {
                     this.style.borderColor = '#dc3545';
                 } else {
-                    this.style.borderColor = '';
+                    this.style.borderColor = '#28a745';
                 }
             });
             
             input.addEventListener('input', function() {
                 if (this.value.trim() !== '') {
                     this.style.borderColor = '#28a745';
+                } else {
+                    this.style.borderColor = '';
                 }
             });
         });
+
+        // Email validation
+        const emailInput = document.getElementById('email');
+        emailInput.addEventListener('blur', function() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(this.value)) {
+                this.style.borderColor = '#dc3545';
+            } else {
+                this.style.borderColor = '#28a745';
+            }
+        });
     </script>
+    <script src="cms.js"></script>
 </body>
 </html>

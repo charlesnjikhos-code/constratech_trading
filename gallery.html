@@ -13,130 +13,388 @@
     <link rel="stylesheet" href="lightbox.css">
 </head>
 <body>
-    <header>
+    <header class="main-header">
         <nav class="navbar" id="nav-top">
-            <div class="logo">
-               <a href="index.html"><img class="img-logo" src="img/logo.jpg" alt=""></a>
-           </div>
-           <div>
-             <ul class="navlinks" id="menu">
-               <li><a href="index.html#home" class="Nav__link">home</a></li>
-               <li><a href="index.html#about" class="Nav__link">about us</a></li>
-               <li><a href="index.html#services" class="Nav__link">services</a></li>
-               <li><a href="index.html#portfolio" class="Nav__link">portfolio</a></li>
-               <li><a href="contact.html" class="Nav__link">contact</a></li>
-       </ul>
-           </div>
-           
-          <button class="hamburger ">
-           <span class="bar"></span>
-       </button>
-       </nav>
-            
-               
+            <div class="nav-container">
+                <div class="logo">
+                    <a href="index.html">
+                        <img class="img-logo" src="img/logo.jpg" alt="Constratech Trading">
+                    </a>
+                </div>
+                
+                <ul class="nav-menu" id="menu">
+                    <li class="nav-item">
+                        <a href="index.html#home" class="nav-link">
+                            <i class="fas fa-home"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="about.html" class="nav-link">
+                            <i class="fas fa-info-circle"></i>
+                            <span>About</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#services" class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <span>Services</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html#portfolio" class="nav-link">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Portfolio</span>
+                        </a>
+                    </li>
+                    <li class="nav-item nav-cta">
+                        <a href="contact.html" class="nav-link nav-link-cta">
+                            <i class="fas fa-envelope"></i>
+                            <span>Contact Us</span>
+                        </a>
+                    </li>
+                </ul>
+                
+                <button class="hamburger" aria-label="Toggle menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </nav>
     </header>
     <!--Mobile Nav-->
+    <div class="mobile-nav-overlay"></div>
     <nav class="mobile-nav">
-   <ul>
-        <a href="index.html#home" class="nav__link">Home</a>
-        <a href="index.html#about" class="nav__link">About Us</a>
-        <a href="index.html#services" class="nav__link">Services</a>
-        <a href="index.html#portfolio" class="nav__link">Portfolio</a>
-        <a href="contact.html" class="nav__link">Contact</a>
-  </ul>
+        <ul>
+            <li>
+                <a href="index.html#home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="about.html">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About Us</span>
+                </a>
+            </li>
+            <li>
+                <a href="index.html#services">
+                    <i class="fas fa-cogs"></i>
+                    <span>Services</span>
+                </a>
+            </li>
+            <li>
+                <a href="index.html#portfolio">
+                    <i class="fas fa-briefcase"></i>
+                    <span>Portfolio</span>
+                </a>
+            </li>
+            <li>
+                <a href="contact.html">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact Us</span>
+                </a>
+            </li>
+        </ul>
     </nav>
      <!--Gallery content-->
 
-     <Section class="container" id="portfolio">
-        <div class="project-head">
-            <h1>PROJECTS</h1><hr>
+     <Section class="gallery-page-section" id="portfolio">
+        <div class="gallery-page-header">
+            <div class="header-content">
+                <span class="section-tag">Our Portfolio</span>
+                <h1 class="gallery-title">Project Gallery</h1>
+                <p class="gallery-subtitle">Explore our completed projects across construction, solar power, and infrastructure development</p>
+            </div>
         </div>
 
-        <div class="filter_container">
-            <div class="row">
-                <div class="gallery-filter">
-                    <span class="filter-item active" data-filter="all">all</span>
-                    <span class="filter-item" data-filter="item1">Project 1</span>
-                    <span class="filter-item" data-filter="item2">Project 2</span>
-                    <span class="filter-item" data-filter="item3">Project 3</span>
-                    <span class="filter-item" data-filter="item4">Project 4</span>
-                    <span class="filter-item" data-filter="item5">Project 5</span>
-                </div>
-          </div>
+        <div class="gallery-filters">
+            <div class="filter-wrapper">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fas fa-th"></i>
+                    <span>All Projects</span>
+                </button>
+                <button class="filter-btn" data-filter="item1">
+                    <i class="fas fa-solar-panel"></i>
+                    <span>Solar Irrigation</span>
+                </button>
+                <button class="filter-btn" data-filter="item2">
+                    <i class="fas fa-screwdriver-wrench"></i>
+                    <span>Drilling</span>
+                </button>
+                <button class="filter-btn" data-filter="item3">
+                    <i class="fas fa-building"></i>
+                    <span>Construction</span>
+                </button>
+                <button class="filter-btn" data-filter="item4">
+                    <i class="fas fa-tractor"></i>
+                    <span>Excavation</span>
+                </button>
+                <button class="filter-btn" data-filter="item5">
+                    <i class="fas fa-droplet"></i>
+                    <span>Water Systems</span>
+                </button>
+            </div>
+        </div>
           
-        <div class="photo-gallery">
-           
-            
-                <div class="photo item1">
-                    <a href="img/project 1.1.jpg" data-lightbox="models" data-title="Solar irrigation project-Phalombe"><img src="img/project 1.1.jpg" alt="item1"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item1">
-                    <a href="img/panel.JPG" data-lightbox="models" data-title="Solar irrigation project"><img src="img/panel.JPG" alt="item1"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item1">
-                    <a href="img/panel (2).JPG" data-lightbox="models" data-title="Solar irrigation project"><img src="img/panel (2).JPG" alt="item1"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item1">
-                    <a href="img/panel (3).JPG" data-lightbox="models" data-title="Solar irrigation project"><img src="img/panel (3).JPG" alt="item1"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item1">
-                    <a href="img/project1.3.jpg" data-lightbox="models" data-title="Solar irrigation project"><img src="img/project1.3.jpg" alt="item1"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item1">
-                    <a href="img/project1.3.jpg" data-lightbox="models" data-title="Solar irrigation project"><img src="img/project1.3.jpg" alt="item1"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item2">
-                    <a href="img/Drill1.jpg" data-lightbox="models" data-title="Drilling"><img src="img/Drill1.jpg" alt="constratechtrading"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item2">
-                    <a href="img/Drill2.jpg" data-lightbox="models" data-title="Drilling"><img src="img/Drill2.jpg" alt="constratechtrading"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item4">
-                    <a href="img/Excav.JPEG" data-lightbox="models" data-title="Excavation Works"><img src="img/Excav.JPEG" alt="item4"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item4">
-                    <a href="img/Excav (2).JPEG" data-lightbox="models" data-title="Excavation Works"><img src="img/Excav (2).JPEG" alt="item2"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item4">
-                    <a href="img/Excav (3).JPEG" data-lightbox="models" data-title="Excavation Works"><img src="img/Excav (3).JPEG" alt="item3"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item4">
-                    <a href="img/Excav2.JPEG" data-lightbox="models" data-title="Excavation Works"><img src="img/Excav2.JPEG" alt="item4"></a>
-                    
-                </div><!-- end of gallery item-->
-                <div class="photo item3">
-                    <a href="img/Framework1.JPEG" data-lightbox="models" data-title="Excavation Works"><img src="img/Framework1.JPEG" alt="item4"></a>
-                    
-                </div><!-- end of gallery item-->
-                <div class="photo item3">
-                    <a href="img/Framework2.JPEG" data-lightbox="models" data-title="Excavation Works"><img src="img/Framework2.JPEG" alt="item4"></a>
-                    
-                </div><!-- end of gallery item-->
-                <div class="photo item3">
-                    <a href="img/ctrl.JPG" data-lightbox="models" data-title="Excavation Works"><img src="img/ctrl.JPG" alt="item4"></a>
-                    
-                </div><!-- end of gallery item-->
-                <div class="photo item4">
-                    <a href="img/Excav3.JPEG" data-lightbox="models" data-title="Excavation Works"><img src="img/Excav3.JPEG" alt="item4"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item5">
-                    <a href="img/tank.JPG" data-lightbox="models" data-title="Solar pump project"><img src="img/tank.jpg" alt="item5"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item5">
-                    <a href="img/tank (2).JPG" data-lightbox="models" data-title="Solar pump project"><img src="img/tank (2).JPG" alt="item2"></a>
-                </div><!-- end of gallery item-->
-                <div class="photo item5">
-                    <a href="img/tank (3).JPG" data-lightbox="models" data-title="Solar pump project"><img src="img/tank (3).JPG" alt="item3"></a>
-                </div><!-- end of gallery item-->
+        <div class="gallery-grid-modern">
+                <div class="gallery-item item1" data-category="item1">
+                    <a href="img/project 1.1.jpg" data-lightbox="models" data-title="Solar Irrigation Project - Phalombe">
+                        <img src="img/project 1.1.jpg" alt="Solar irrigation project">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Solar Irrigation</span>
+                                <h3>Phalombe Solar Project</h3>
+                                <p>Large-scale irrigation system</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item1" data-category="item1">
+                    <a href="img/panel.JPG" data-lightbox="models" data-title="Solar Panel Installation">
+                        <img src="img/panel.JPG" alt="Solar panels">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Solar Irrigation</span>
+                                <h3>Panel Installation</h3>
+                                <p>High-efficiency solar array</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item1" data-category="item1">
+                    <a href="img/panel (2).JPG" data-lightbox="models" data-title="Solar Irrigation System">
+                        <img src="img/panel (2).JPG" alt="Solar irrigation">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Solar Irrigation</span>
+                                <h3>Irrigation System</h3>
+                                <p>Sustainable water solution</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item1" data-category="item1">
+                    <a href="img/panel (3).JPG" data-lightbox="models" data-title="Solar Panel Array">
+                        <img src="img/panel (3).JPG" alt="Solar panel array">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Solar Irrigation</span>
+                                <h3>Solar Array Setup</h3>
+                                <p>Renewable energy installation</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item1" data-category="item1">
+                    <a href="img/project1.3.jpg" data-lightbox="models" data-title="Complete Solar Installation">
+                        <img src="img/project1.3.jpg" alt="Solar installation">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Solar Irrigation</span>
+                                <h3>Complete System</h3>
+                                <p>End-to-end installation</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item2" data-category="item2">
+                    <a href="img/Drill1.jpg" data-lightbox="models" data-title="Borehole Drilling Operation">
+                        <img src="img/Drill1.jpg" alt="Drilling operation">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Drilling</span>
+                                <h3>Borehole Drilling</h3>
+                                <p>Water access project</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item2" data-category="item2">
+                    <a href="img/Drill2.jpg" data-lightbox="models" data-title="Deep Well Drilling">
+                        <img src="img/Drill2.jpg" alt="Deep well drilling">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Drilling</span>
+                                <h3>Deep Well Project</h3>
+                                <p>Professional drilling services</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item4" data-category="item4">
+                    <a href="img/Excav.JPEG" data-lightbox="models" data-title="Heavy Excavation">
+                        <img src="img/Excav.JPEG" alt="Excavation work">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Excavation</span>
+                                <h3>Site Excavation</h3>
+                                <p>Heavy machinery operations</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item4" data-category="item4">
+                    <a href="img/Excav (2).JPEG" data-lightbox="models" data-title="Earthworks Project">
+                        <img src="img/Excav (2).JPEG" alt="Earthworks">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Excavation</span>
+                                <h3>Earthworks</h3>
+                                <p>Site preparation services</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item4" data-category="item4">
+                    <a href="img/Excav (3).JPEG" data-lightbox="models" data-title="Ground Leveling">
+                        <img src="img/Excav (3).JPEG" alt="Ground leveling">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Excavation</span>
+                                <h3>Ground Leveling</h3>
+                                <p>Precision excavation work</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item4" data-category="item4">
+                    <a href="img/Excav2.JPEG" data-lightbox="models" data-title="Site Development">
+                        <img src="img/Excav2.JPEG" alt="Site development">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Excavation</span>
+                                <h3>Site Development</h3>
+                                <p>Foundation preparation</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item3" data-category="item3">
+                    <a href="img/Framework1.JPEG" data-lightbox="models" data-title="Structural Framework">
+                        <img src="img/Framework1.JPEG" alt="Framework construction">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Construction</span>
+                                <h3>Structural Framework</h3>
+                                <p>Building construction</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item3" data-category="item3">
+                    <a href="img/Framework2.JPEG" data-lightbox="models" data-title="Building Framework">
+                        <img src="img/Framework2.JPEG" alt="Building framework">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Construction</span>
+                                <h3>Building Framework</h3>
+                                <p>Structural engineering</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item3" data-category="item3">
+                    <a href="img/ctrl.JPG" data-lightbox="models" data-title="Control Systems">
+                        <img src="img/ctrl.JPG" alt="Control systems">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Construction</span>
+                                <h3>Control Systems</h3>
+                                <p>Technical installations</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item4" data-category="item4">
+                    <a href="img/Excav3.JPEG" data-lightbox="models" data-title="Major Excavation">
+                        <img src="img/Excav3.JPEG" alt="Major excavation">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Excavation</span>
+                                <h3>Major Excavation</h3>
+                                <p>Large-scale earthworks</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item5" data-category="item5">
+                    <a href="img/tank.JPG" data-lightbox="models" data-title="Water Tank Installation">
+                        <img src="img/tank.jpg" alt="Water tank">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Water Systems</span>
+                                <h3>Tank Installation</h3>
+                                <p>Water storage solution</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item5" data-category="item5">
+                    <a href="img/tank (2).JPG" data-lightbox="models" data-title="Water Storage System">
+                        <img src="img/tank (2).JPG" alt="Water storage">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Water Systems</span>
+                                <h3>Storage System</h3>
+                                <p>Complete water solution</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="gallery-item item5" data-category="item5">
+                    <a href="img/tank (3).JPG" data-lightbox="models" data-title="Pump House Installation">
+                        <img src="img/tank (3).JPG" alt="Pump house">
+                        <div class="gallery-item-overlay">
+                            <div class="overlay-info">
+                                <span class="project-tag">Water Systems</span>
+                                <h3>Pump House</h3>
+                                <p>Water distribution system</p>
+                                <i class="fas fa-search-plus"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
                 
 
     </Section><!--End gallery section-->
     <footer>
-        <div class="head-office">
-            <H1>HEAD OFFICE</H1>
-        </div>
-        <div class="footer-container">
-            
         <div class="footer-main">
             <div class="footer-container">
                 <div class="footer-column">
@@ -197,33 +455,135 @@
         <div class="footer-bottom">
             <p>&copy; 2025 Constratech Trading. All rights reserved.</p>
         </div>
-        
-      </footer>
+    </footer>
       
 <script src="lightbox-plus-jquery.js"></script>
 <script>
-// Load cloud-uploaded photos into gallery
 document.addEventListener('DOMContentLoaded', function() {
+    // Filter functionality
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Update active button
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter gallery items with animation
+            galleryItems.forEach(item => {
+                item.style.animation = 'fadeOut 0.3s ease';
+                
+                setTimeout(() => {
+                    if (filter === 'all' || item.classList.contains(filter)) {
+                        item.style.display = 'block';
+                        item.style.animation = 'fadeIn 0.5s ease';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }, 300);
+            });
+        });
+    });
+    
+    // Load cloud-uploaded photos into gallery
     const galleryData = JSON.parse(localStorage.getItem('gallery-data.json') || '[]');
     
     if (galleryData.length > 0) {
-        const photoGallery = document.querySelector('.photo-gallery');
+        const galleryGrid = document.querySelector('.gallery-grid-modern');
         
         // Add uploaded cloud photos at the beginning
         galleryData.forEach(photo => {
-            const photoDiv = document.createElement('div');
-            photoDiv.className = 'photo uploaded-cloud';
-            photoDiv.innerHTML = `
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item uploaded-cloud';
+            galleryItem.setAttribute('data-category', 'all');
+            galleryItem.innerHTML = `
                 <a href="${photo.url}" data-lightbox="models" data-title="${photo.title}">
                     <img src="${photo.thumb}" alt="${photo.title}">
+                    <div class="gallery-item-overlay">
+                        <div class="overlay-info">
+                            <span class="project-tag">Recent Upload</span>
+                            <h3>${photo.title}</h3>
+                            <p>Cloud uploaded image</p>
+                            <i class="fas fa-search-plus"></i>
+                        </div>
+                    </div>
                 </a>
             `;
-            photoGallery.insertBefore(photoDiv, photoGallery.firstChild);
+            galleryGrid.insertBefore(galleryItem, galleryGrid.firstChild);
         });
     }
 });
+
+// Load dynamic portfolio from database
+async function loadGalleryPortfolio() {
+    try {
+        const response = await fetch('api/content.php?section=all');
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+            const portfolioSection = result.data.portfolio_section;
+            const portfolioItems = result.data.portfolio;
+            
+            // Update gallery header
+            if (portfolioSection) {
+                const galleryTitle = document.querySelector('.gallery-title');
+                const gallerySubtitle = document.querySelector('.gallery-subtitle');
+                
+                if (galleryTitle) {
+                    galleryTitle.textContent = portfolioSection.section_title || 'Project Gallery';
+                }
+                if (gallerySubtitle) {
+                    gallerySubtitle.textContent = portfolioSection.section_description || 'Explore our completed projects';
+                }
+            }
+            
+            // Add portfolio items to gallery
+            if (portfolioItems && portfolioItems.length > 0) {
+                const galleryGrid = document.querySelector('.gallery-grid-modern');
+                
+                if (galleryGrid) {
+                    // Clear existing items (optional - or keep static items)
+                    // galleryGrid.innerHTML = '';
+                    
+                    // Add database items at the beginning
+                    portfolioItems.forEach(item => {
+                        const category = item.category.toLowerCase().replace(/\s+/g, '-');
+                        const imagePath = item.image_path || 'img/placeholder.jpg';
+                        const galleryItem = document.createElement('div');
+                        galleryItem.className = `gallery-item ${category}`;
+                        galleryItem.setAttribute('data-category', category);
+                        galleryItem.innerHTML = `
+                            <a href="${imagePath}" data-lightbox="models" data-title="${item.title}">
+                                <img src="${imagePath}" alt="${item.title}" onerror="console.error('Failed to load:', this.src);">
+                                <div class="gallery-item-overlay">
+                                    <div class="overlay-info">
+                                        <span class="project-tag">${item.category}</span>
+                                        <h3>${item.title}</h3>
+                                        <p>${item.description}</p>
+                                        <i class="fas fa-search-plus"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        `;
+                        galleryGrid.insertBefore(galleryItem, galleryGrid.firstChild);
+                    });
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error loading gallery portfolio:', error);
+        // Keep default content if API fails
+    }
+}
+
+// Load gallery portfolio when page loads
+document.addEventListener('DOMContentLoaded', loadGalleryPortfolio);
 </script>
-</body>
+<script src="cms.js"></script>
 <script src="index.js"></script>
+</body>
 
 </html>
