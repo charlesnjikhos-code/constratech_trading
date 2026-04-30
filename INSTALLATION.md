@@ -1,4 +1,72 @@
-# Constratech Trading CMS - PHP/MySQL Installation Guide
+# Constratech Trading CMS - Installation Guide
+
+---
+
+## ✅ Version 3.0 — No-Server CMS (Current)
+
+This version requires **nothing to install**. No PHP, no MySQL, no XAMPP. Works directly in your browser and deploys through GitHub Pages.
+
+### How It Works
+
+- You edit content in the CMS — changes are saved in your browser's local storage
+- Click **Preview Site** to see your changes before publishing
+- Click **Publish to Website** to download a `content.json` file
+- Push that file to GitHub — the live site at constratechtrading.com updates in ~1 minute
+
+### Getting Started
+
+1. Open `cms-login.html` in your browser (double-click the file, or open via GitHub Pages at `constratechtrading.com/cms-login.html`)
+2. Enter the password: `constratech2025`
+3. Edit any section using the sidebar
+4. Click **Save** at the bottom of each section
+5. Click **Preview Site** (top bar) to review changes in a new tab
+6. When ready to go live, click **Publish to Website** — this downloads `content.json`
+7. Move the downloaded `content.json` into your project folder (replacing the old one)
+8. Run:
+   ```bash
+   git add content.json
+   git commit -m "update site content"
+   git push
+   ```
+9. Wait ~1 minute — your changes are live
+
+### Changing the Password
+
+The password is stored in `cms-login.html`. Open the file and find this line near the bottom:
+
+```js
+const STORED_PASSWORD = localStorage.getItem('cms_password') || 'constratech2025';
+```
+
+To set a permanent new password, change `'constratech2025'` to your new password and push to GitHub.
+
+### Adding Images
+
+The CMS does not upload images — GitHub Pages does not support file uploads. To add a new image:
+
+1. Add the image file to the `img/` folder in your project
+2. In the CMS, type the relative path into the image field (e.g. `img/myproject.jpg`)
+3. Save and publish as normal
+
+### Files Involved
+
+| File | Purpose |
+|------|---------|
+| `content.json` | Live content store — push this to update the website |
+| `cms-login.html` | CMS login page (password-only, no server needed) |
+| `cms-admin.html` | CMS admin dashboard |
+| `cms-admin.js` | Saves edits to localStorage, handles Publish export |
+| `cms.js` | Loads content into the website from `content.json` |
+
+### Important Notes
+
+- **Changes are stored in your browser.** If you clear browser data, unsaved work is lost. Use **Publish to Website** regularly to keep `content.json` as your backup.
+- **The live site only updates when you push `content.json` to GitHub.** Saving in the CMS alone does not affect the live site.
+- **Preview uses `?preview=1`** in the URL. The live site always reads from `content.json`.
+
+---
+
+## 🗄️ Version 2.0 — PHP/MySQL CMS (Legacy)
 
 ## 📋 Prerequisites
 
