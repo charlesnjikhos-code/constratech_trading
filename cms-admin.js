@@ -498,12 +498,94 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ========================================
-    // PUBLISH — download content.json
+    // PUBLISH — write content.json directly to project folder
     // ========================================
 
-    function publishContent() {
+    const DIR_HANDLE_KEY = 'constratech_project_dir';
+
+    async function getStoredDirHandle() {
+        try {
+            const db = await openDirDB();
+            return await dbGet(db, DIR_HANDLE_KEY);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    async function storeDirHandle(handle) {
+        try {
+            const db = await openDirDB();
+            await dbPut(db, DIR_HANDLE_KEY, handle);
+        } catch (e) {}
+    }
+
+    function openDirDB() {
+        return new Promise((resolve, reject) => {
+            const req = indexedDB.open('constratech_cms_db', 1);
+            req.onupgradeneeded = e => e.target.result.createObjectStore('handles');
+            req.onsuccess = e => resolve(e.target.result);
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    function dbGet(db, key) {
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction('handles', 'readonly');
+            const req = tx.objectStore('handles').get(key);
+            req.onsuccess = () => resolve(req.result);
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    function dbPut(db, key, value) {
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction('handles', 'readwrite');
+            const req = tx.objectStore('handles').put(value, key);
+            req.onsuccess = () => resolve();
+            req.onerror = () => reject(req.error);
+        });
+    }
+
+    async function publishContent() {
         const content = getCurrentContent();
         const json = JSON.stringify(content, null, 2);
+
+        // Use File System Access API if available (Chrome/Edge)
+        if (window.showDirectoryPicker) {
+            try {
+                let dirHandle = await getStoredDirHandle();
+
+                // Check if stored handle still has permission
+                if (dirHandle) {
+                    const perm = await dirHandle.queryPermission({ mode: 'readwrite' });
+                    if (perm !== 'granted') {
+                        const req = await dirHandle.requestPermission({ mode: 'readwrite' });
+                        if (req !== 'granted') dirHandle = null;
+                    }
+                }
+
+                // No stored handle — ask user to pick the project folder
+                if (!dirHandle) {
+                    showSuccessToast('Select your project folder (constratech_trading)…');
+                    dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+                    await storeDirHandle(dirHandle);
+                }
+
+                // Write content.json directly into the folder
+                const fileHandle = await dirHandle.getFileHandle('content.json', { create: true });
+                const writable = await fileHandle.createWritable();
+                await writable.write(json);
+                await writable.close();
+
+                showSuccessToast('content.json saved to your project folder! Now git push to go live.');
+                return;
+            } catch (e) {
+                if (e.name === 'AbortError') return; // user cancelled picker
+                console.warn('File System Access API failed, falling back to download', e);
+            }
+        }
+
+        // Fallback for Safari / unsupported browsers
         const blob = new Blob([json], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -511,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function () {
         a.download = 'content.json';
         a.click();
         URL.revokeObjectURL(url);
-        showSuccessToast('content.json downloaded! Commit & push it to go live.');
+        showSuccessToast('content.json downloaded — move it to your project folder, then git push.');
     }
 
     // ========================================

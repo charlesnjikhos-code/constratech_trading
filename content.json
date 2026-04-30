@@ -22,10 +22,26 @@
     "image_path": "img/About_Us.jpg"
   },
   "features": [
-    { "icon": "fas fa-hard-hat", "title": "MK 500M Capacity", "description": "Qualified for major civil and building projects across Malawi" },
-    { "icon": "fas fa-certificate", "title": "Fully Certified", "description": "NCIC registered in Civil & Building categories" },
-    { "icon": "fas fa-users", "title": "Expert Team", "description": "Professional staff delivering quality results" },
-    { "icon": "fas fa-handshake", "title": "Trusted Partner", "description": "100+ successful projects completed nationwide" }
+    {
+      "icon": "fas fa-hard-hat",
+      "title": "MK 500M Capacity",
+      "description": "Qualified for major civil and building projects across Malawi"
+    },
+    {
+      "icon": "fas fa-certificate",
+      "title": "Fully Certified",
+      "description": "CIRA registered in Class 4 Civil & Building categories"
+    },
+    {
+      "icon": "fas fa-users",
+      "title": "Expert Team",
+      "description": "Professional staff delivering quality results"
+    },
+    {
+      "icon": "fas fa-handshake",
+      "title": "Trusted Partner",
+      "description": "100+ successful projects completed nationwide"
+    }
   ],
   "services_section": {
     "section_title": "Comprehensive Construction & Solar Solutions",
@@ -33,10 +49,30 @@
     "section_description": "Constratech Trading delivers excellence across multiple domains. From large-scale construction projects to innovative solar installations, we provide cost-effective, efficient solutions for commercial businesses, homeowners, and international organizations."
   },
   "services": [
-    { "id": 1, "icon": "fa-solid fa-person-digging", "title": "General Contracting", "description": "Construction of buildings and concrete structures, pavements, and access roads with professional expertise." },
-    { "id": 2, "icon": "fa-solid fa-compass-drafting", "title": "Concept & Design", "description": "Complete project management from inception to completion, including licensing, permits, and detailed specifications." },
-    { "id": 3, "icon": "fa-solid fa-solar-panel", "title": "Solar Power Solutions", "description": "Design and installation of solar-powered domestic and irrigation water reticulation systems." },
-    { "id": 4, "icon": "fa-solid fa-hard-hat", "title": "Construction Consulting", "description": "Tailored consulting solutions and professional engineering design services." }
+    {
+      "id": 1,
+      "icon": "fa-solid fa-person-digging",
+      "title": "General Contracting",
+      "description": "Construction of buildings and concrete structures, pavements, and access roads with professional expertise."
+    },
+    {
+      "id": 2,
+      "icon": "fa-solid fa-compass-drafting",
+      "title": "Concept & Design",
+      "description": "Complete project management from inception to completion, including licensing, permits, and detailed specifications."
+    },
+    {
+      "id": 3,
+      "icon": "fa-solid fa-solar-panel",
+      "title": "Solar Power Solutions",
+      "description": "Design and installation of solar-powered domestic and irrigation water reticulation systems."
+    },
+    {
+      "id": 4,
+      "icon": "fa-solid fa-hard-hat",
+      "title": "Construction Consulting",
+      "description": "Tailored consulting solutions and professional engineering design services."
+    }
   ],
   "portfolio_section": {
     "section_title": "Our Project Showcase",
@@ -44,12 +80,54 @@
     "section_description": "Delivering excellence across construction and solar installations throughout Malawi"
   },
   "portfolio": [
-    { "id": 1, "image_path": "img/project1.2.jpg", "category": "Construction", "title": "Major Infrastructure Project", "description": "Large-scale building construction with modern techniques", "is_featured": 1 },
-    { "id": 2, "image_path": "img/Drill1.jpg", "category": "Drilling", "title": "Water Borehole Drilling", "description": "Professional drilling services", "is_featured": 0 },
-    { "id": 3, "image_path": "img/panel (3).JPG", "category": "Solar Power", "title": "Solar Panel Installation", "description": "Renewable energy solutions", "is_featured": 0 },
-    { "id": 4, "image_path": "img/Excav1.JPEG", "category": "Earthworks", "title": "Excavation Services", "description": "Heavy machinery operations", "is_featured": 0 },
-    { "id": 5, "image_path": "img/Framework1.JPEG", "category": "Construction", "title": "Structural Framework", "description": "Building foundation work", "is_featured": 0 },
-    { "id": 6, "image_path": "img/tank.jpg", "category": "Installation", "title": "Water Tank System", "description": "Water storage solutions", "is_featured": 0 }
+    {
+      "id": 1,
+      "image_path": "img/project1.2.jpg",
+      "category": "Construction",
+      "title": "Major Infrastructure Project",
+      "description": "Large-scale building construction with modern techniques",
+      "is_featured": 1
+    },
+    {
+      "id": 2,
+      "image_path": "img/Drill1.jpg",
+      "category": "Drilling",
+      "title": "Water Borehole Drilling",
+      "description": "Professional drilling services",
+      "is_featured": 0
+    },
+    {
+      "id": 3,
+      "image_path": "img/panel (3).JPG",
+      "category": "Solar Power",
+      "title": "Solar Panel Installation",
+      "description": "Renewable energy solutions",
+      "is_featured": 0
+    },
+    {
+      "id": 4,
+      "image_path": "img/Excav1.JPEG",
+      "category": "Earthworks",
+      "title": "Excavation Services",
+      "description": "Heavy machinery operations",
+      "is_featured": 0
+    },
+    {
+      "id": 5,
+      "image_path": "img/Framework1.JPEG",
+      "category": "Construction",
+      "title": "Structural Framework",
+      "description": "Building foundation work",
+      "is_featured": 0
+    },
+    {
+      "id": 6,
+      "image_path": "img/tank.jpg",
+      "category": "Installation",
+      "title": "Water Tank System",
+      "description": "Water storage solutions",
+      "is_featured": 0
+    }
   ],
   "contact": {
     "section_title": "Get In Touch",
