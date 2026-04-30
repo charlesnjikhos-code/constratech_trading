@@ -1,107 +1,160 @@
-// CMS Admin Panel Controller - PHP/MySQL Version
-// Makes AJAX calls to PHP API endpoints
+// CMS Admin Panel - localStorage version (no PHP/MySQL required)
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Check authentication
-    checkAuthentication();
-    
-    // Initialize
+const CMS_STORAGE_KEY = 'constratech_content';
+const CMS_AUTH_KEY = 'cms_logged_in';
+const CMS_PASSWORD_KEY = 'cms_password';
+const DEFAULT_PASSWORD = 'constratech2025';
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Auth check
+    if (!sessionStorage.getItem(CMS_AUTH_KEY)) {
+        window.location.href = 'cms-login.html';
+        return;
+    }
+
     loadAllSections();
     setupNavigation();
     setupEventListeners();
     setupScrollBehavior();
 
-    // Navigation Setup
+    // ========================================
+    // DEFAULT CONTENT (mirrors content.json)
+    // ========================================
+
+    function getDefaultContent() {
+        return {
+            company: {
+                name: 'Constratech Trading',
+                tagline: 'Building Excellence, Powering Progress',
+                phone: '+265 99 587 7024',
+                email: 'info@constratechtrading.com',
+                address: 'House NP/337, Old Naperi, Blantyre',
+                logo_path: 'img/logo.jpg'
+            },
+            hero: {
+                title: 'Building Excellence Powering Progress',
+                subtitle: 'Leading Construction & Solar Solutions in Malawi',
+                description: 'Professional construction services and innovative solar power solutions. Delivering quality projects from concept to completion with over 8 years of industry expertise.',
+                cta_text: 'Explore Services',
+                cta_link: '#services',
+                background_image: ''
+            },
+            about: {
+                title: "Building Malawi's Future, One Project at a Time",
+                subtitle: 'About Us',
+                description: 'Established in 2015, Constratech Trading has become a trusted name in Malawi\'s construction industry. We are fully registered with all major regulatory bodies including NCIC, Malawi Revenue Authority, PPDA, and the Ministry of Trade.',
+                image_path: 'img/About_Us.jpg'
+            },
+            features: [
+                { icon: 'fas fa-hard-hat', title: 'MK 500M Capacity', description: 'Qualified for major civil and building projects across Malawi' },
+                { icon: 'fas fa-certificate', title: 'Fully Certified', description: 'NCIC registered in Civil & Building categories' },
+                { icon: 'fas fa-users', title: 'Expert Team', description: 'Professional staff delivering quality results' },
+                { icon: 'fas fa-handshake', title: 'Trusted Partner', description: '100+ successful projects completed nationwide' }
+            ],
+            services_section: {
+                section_title: 'Comprehensive Construction & Solar Solutions',
+                section_subtitle: 'What We Do',
+                section_description: 'Constratech Trading delivers excellence across multiple domains. From large-scale construction projects to innovative solar installations, we provide cost-effective, efficient solutions for commercial businesses, homeowners, and international organizations.'
+            },
+            services: [
+                { id: 1, icon: 'fa-solid fa-person-digging', title: 'General Contracting', description: 'Construction of buildings and concrete structures, pavements, and access roads with professional expertise.' },
+                { id: 2, icon: 'fa-solid fa-compass-drafting', title: 'Concept & Design', description: 'Complete project management from inception to completion, including licensing, permits, and detailed specifications.' },
+                { id: 3, icon: 'fa-solid fa-solar-panel', title: 'Solar Power Solutions', description: 'Design and installation of solar-powered domestic and irrigation water reticulation systems.' },
+                { id: 4, icon: 'fa-solid fa-hard-hat', title: 'Construction Consulting', description: 'Tailored consulting solutions and professional engineering design services.' }
+            ],
+            portfolio_section: {
+                section_title: 'Our Project Showcase',
+                section_subtitle: 'Portfolio',
+                section_description: 'Delivering excellence across construction and solar installations throughout Malawi'
+            },
+            portfolio: [
+                { id: 1, image_path: 'img/project1.2.jpg', category: 'Construction', title: 'Major Infrastructure Project', description: 'Large-scale building construction with modern techniques', is_featured: 1 },
+                { id: 2, image_path: 'img/Drill1.jpg', category: 'Drilling', title: 'Water Borehole Drilling', description: 'Professional drilling services', is_featured: 0 },
+                { id: 3, image_path: 'img/panel (3).JPG', category: 'Solar Power', title: 'Solar Panel Installation', description: 'Renewable energy solutions', is_featured: 0 },
+                { id: 4, image_path: 'img/Excav1.JPEG', category: 'Earthworks', title: 'Excavation Services', description: 'Heavy machinery operations', is_featured: 0 },
+                { id: 5, image_path: 'img/Framework1.JPEG', category: 'Construction', title: 'Structural Framework', description: 'Building foundation work', is_featured: 0 },
+                { id: 6, image_path: 'img/tank.jpg', category: 'Installation', title: 'Water Tank System', description: 'Water storage solutions', is_featured: 0 }
+            ],
+            contact: {
+                section_title: 'Get In Touch',
+                section_subtitle: 'Contact Us',
+                section_description: 'Ready to start your project? Contact us today for a free consultation.',
+                form_email: 'info@constratechtrading.com'
+            },
+            footer: {
+                description: 'Leading construction and solar power solutions provider in Malawi since 2015.',
+                copyright_text: '© 2025 Constratech Trading. All rights reserved.'
+            },
+            social: { facebook: '#', twitter: '#', linkedin: '#', instagram: '#' }
+        };
+    }
+
+    // ========================================
+    // STORAGE HELPERS
+    // ========================================
+
+    function loadContent() {
+        const stored = localStorage.getItem(CMS_STORAGE_KEY);
+        if (stored) {
+            try { return JSON.parse(stored); } catch (e) {}
+        }
+        return getDefaultContent();
+    }
+
+    function saveContent(content) {
+        localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(content));
+    }
+
+    function getCurrentContent() {
+        return loadContent();
+    }
+
+    // ========================================
+    // NAVIGATION
+    // ========================================
+
     function setupNavigation() {
-        const navLinks = document.querySelectorAll('.cms-nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
+        document.querySelectorAll('.cms-nav-link').forEach(link => {
+            link.addEventListener('click', function (e) {
                 e.preventDefault();
-                const section = this.dataset.section;
-                switchSection(section);
+                switchSection(this.dataset.section);
             });
         });
     }
 
     function switchSection(section) {
-        // Update nav active state
-        document.querySelectorAll('.cms-nav-link').forEach(link => {
-            link.classList.remove('active');
-        });
+        document.querySelectorAll('.cms-nav-link').forEach(l => l.classList.remove('active'));
         document.querySelector(`[data-section="${section}"]`).classList.add('active');
 
-        // Update content sections
-        document.querySelectorAll('.content-section').forEach(sec => {
-            sec.classList.remove('active');
-        });
+        document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
         document.getElementById(`${section}-section`).classList.add('active');
 
-        // Update title
         const titles = {
-            dashboard: 'Dashboard',
-            company: 'Company Information',
-            hero: 'Hero Section',
-            about: 'About Section',
-            services: 'Services',
-            portfolio: 'Portfolio',
-            contact: 'Contact Information',
-            footer: 'Footer Settings',
-            users: 'User Management',
-            help: 'Help & User Guide'
+            dashboard: 'Dashboard', company: 'Company Information', hero: 'Hero Section',
+            about: 'About Section', services: 'Services', portfolio: 'Portfolio',
+            contact: 'Contact Information', footer: 'Footer Settings', help: 'Help & User Guide'
         };
-        document.getElementById('sectionTitle').textContent = titles[section];
+        document.getElementById('sectionTitle').textContent = titles[section] || section;
 
-        // Load help content if help section
-        if (section === 'help') {
-            loadHelpContent();
-        }
-
-        // Load users if users section
-        if (section === 'users') {
-            console.log('Loading users section...');
-            loadUsers();
-        }
+        if (section === 'help') loadHelpContent();
     }
 
-    // Check authentication
-    async function checkAuthentication() {
-        try {
-            const response = await fetch('api/auth.php?action=check');
-            const result = await response.json();
-            
-            if (!result.success) {
-                window.location.href = 'cms-login.html';
-            }
-        } catch (error) {
-            console.error('Auth check failed:', error);
-            window.location.href = 'cms-login.html';
-        }
+    // ========================================
+    // LOAD ALL SECTIONS FROM STORAGE
+    // ========================================
+
+    function loadAllSections() {
+        const content = loadContent();
+        loadCompanySection(content.company);
+        loadHeroSection(content.hero);
+        loadAboutSection(content.about, content.features);
+        loadServicesSection(content.services_section, content.services);
+        loadPortfolioSection(content.portfolio_section, content.portfolio);
+        loadContactSection(content.contact);
+        loadFooterSection(content.footer, content.social);
     }
 
-    // Load all sections
-    async function loadAllSections() {
-        try {
-            const response = await fetch('api/content.php?section=all');
-            const result = await response.json();
-            
-            if (result.success) {
-                const content = result.data;
-                loadCompanySection(content.company);
-                loadHeroSection(content.hero);
-                loadAboutSection(content.about, content.features);
-                loadServicesSection(content.services_section, content.services);
-                loadPortfolioSection(content.portfolio_section, content.portfolio);
-                loadContactSection(content.contact);
-                loadFooterSection(content.footer, content.social);
-            } else {
-                showError('Failed to load content: ' + result.message);
-            }
-        } catch (error) {
-            showError('Error loading content: ' + error.message);
-        }
-    }
-
-    // Load Company Section
     function loadCompanySection(data) {
         if (!data) return;
         document.getElementById('companyName').value = data.name || '';
@@ -112,7 +165,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('companyLogo').value = data.logo_path || '';
     }
 
-    // Load Hero Section
     function loadHeroSection(data) {
         if (!data) return;
         document.getElementById('heroTitle').value = data.title || '';
@@ -123,7 +175,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('heroBackgroundImage').value = data.background_image || '';
     }
 
-    // Load About Section
     function loadAboutSection(about, features) {
         if (!about) return;
         document.getElementById('aboutTitle').value = about.title || '';
@@ -131,7 +182,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('aboutDescription').value = about.description || '';
         document.getElementById('aboutImage').value = about.image_path || '';
 
-        // Load features
         const container = document.getElementById('featuresContainer');
         container.innerHTML = '';
         if (features && features.length > 0) {
@@ -153,21 +203,17 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <textarea class="form-control feature-description" rows="2">${feature.description || ''}</textarea>
                             </div>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
     }
 
-    // Load Services Section
     function loadServicesSection(section, services) {
         if (section) {
             document.getElementById('servicesTitle').value = section.section_title || '';
             document.getElementById('servicesSubtitle').value = section.section_subtitle || '';
             document.getElementById('servicesDescription').value = section.section_description || '';
         }
-
-        // Load service items
         const container = document.getElementById('servicesContainer');
         container.innerHTML = '';
         if (services && services.length > 0) {
@@ -179,10 +225,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function createServiceItem(service, index) {
         return `
-            <div class="service-item" data-id="${service.id || ''}" data-index="${index}">
+            <div class="service-item" data-index="${index}">
                 <div class="item-header">
                     <h4>Service ${index + 1}</h4>
-                    <button class="btn-delete" onclick="deleteService(${service.id || 0})">
+                    <button class="btn-delete" onclick="deleteServiceItem(${index})">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -200,19 +246,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         <textarea class="form-control service-description" rows="2">${service.description || ''}</textarea>
                     </div>
                 </div>
-            </div>
-        `;
+            </div>`;
     }
 
-    // Load Portfolio Section
     function loadPortfolioSection(section, portfolio) {
         if (section) {
             document.getElementById('portfolioTitle').value = section.section_title || '';
             document.getElementById('portfolioSubtitle').value = section.section_subtitle || '';
             document.getElementById('portfolioDescription').value = section.section_description || '';
         }
-
-        // Featured project
         const featured = portfolio ? portfolio.find(p => p.is_featured == 1) : null;
         if (featured) {
             document.getElementById('featuredImage').value = featured.image_path || '';
@@ -220,8 +262,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('featuredTitle').value = featured.title || '';
             document.getElementById('featuredDescription').value = featured.description || '';
         }
-
-        // Load projects
         const container = document.getElementById('projectsContainer');
         container.innerHTML = '';
         if (portfolio && portfolio.length > 0) {
@@ -232,30 +272,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function createProjectItem(project, index) {
-        const previewId = `projectImagePreview${index}`;
-        const uploadId = `projectImageUpload${index}`;
-        
         return `
-            <div class="project-item" data-id="${project.id || ''}" data-index="${index}">
+            <div class="project-item" data-index="${index}">
                 <div class="item-header">
                     <h4>Project ${index + 1}</h4>
-                    <button class="btn-delete" onclick="deleteProject(${project.id || 0})">
+                    <button class="btn-delete" onclick="deleteProjectItem(${index})">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
                 <div class="form-grid">
                     <div class="form-group full-width">
-                        <label>Image</label>
-                        <div class="image-upload-group">
-                            <input type="text" class="form-control project-image" value="${project.image_path || ''}" placeholder="Image path" readonly>
-                            <input type="file" id="${uploadId}" class="project-image-upload" data-preview-id="${previewId}" accept="image/*" style="display: none;">
-                            <button type="button" class="btn-secondary upload-btn" onclick="document.getElementById('${uploadId}').click()">
-                                <i class="fas fa-upload"></i> Upload Image
-                            </button>
-                            <div class="image-preview ${project.image_path ? '' : 'empty'}" id="${previewId}">
-                                ${project.image_path ? `<img src="${project.image_path}" alt="Project image">` : ''}
-                            </div>
-                        </div>
+                        <label>Image Path <small style="color:#64748b">(add the image file to your img/ folder, then type the path here)</small></label>
+                        <input type="text" class="form-control project-image" value="${project.image_path || ''}" placeholder="e.g. img/myproject.jpg">
                     </div>
                     <div class="form-group">
                         <label>Category</label>
@@ -270,11 +298,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         <input type="text" class="form-control project-description" value="${project.description || ''}">
                     </div>
                 </div>
-            </div>
-        `;
+            </div>`;
     }
 
-    // Load Contact Section
     function loadContactSection(data) {
         if (!data) return;
         document.getElementById('contactTitle').value = data.section_title || '';
@@ -283,7 +309,6 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('contactFormEmail').value = data.form_email || '';
     }
 
-    // Load Footer Section
     function loadFooterSection(footer, social) {
         if (footer) {
             document.getElementById('footerDescription').value = footer.description || '';
@@ -297,9 +322,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Save functions
-    async function saveCompanySection() {
-        const data = {
+    // ========================================
+    // COLLECT SECTION DATA FROM FORM
+    // ========================================
+
+    function collectCompany() {
+        return {
             name: document.getElementById('companyName').value,
             tagline: document.getElementById('companyTagline').value,
             phone: document.getElementById('companyPhone').value,
@@ -307,12 +335,10 @@ document.addEventListener('DOMContentLoaded', function() {
             address: document.getElementById('companyAddress').value,
             logo_path: document.getElementById('companyLogo').value
         };
-        
-        await saveToAPI('company', data);
     }
 
-    async function saveHeroSection() {
-        const data = {
+    function collectHero() {
+        return {
             title: document.getElementById('heroTitle').value,
             subtitle: document.getElementById('heroSubtitle').value,
             description: document.getElementById('heroDescription').value,
@@ -320,11 +346,9 @@ document.addEventListener('DOMContentLoaded', function() {
             cta_link: document.getElementById('heroCtaLink').value,
             background_image: document.getElementById('heroBackgroundImage').value
         };
-        
-        await saveToAPI('hero', data);
     }
 
-    async function saveAboutSection() {
+    function collectAbout() {
         const features = [];
         document.querySelectorAll('.feature-item').forEach(item => {
             features.push({
@@ -333,61 +357,49 @@ document.addEventListener('DOMContentLoaded', function() {
                 description: item.querySelector('.feature-description').value
             });
         });
-
-        const aboutData = {
-            title: document.getElementById('aboutTitle').value,
-            subtitle: document.getElementById('aboutSubtitle').value,
-            description: document.getElementById('aboutDescription').value,
-            image_path: document.getElementById('aboutImage').value
+        return {
+            about: {
+                title: document.getElementById('aboutTitle').value,
+                subtitle: document.getElementById('aboutSubtitle').value,
+                description: document.getElementById('aboutDescription').value,
+                image_path: document.getElementById('aboutImage').value
+            },
+            features
         };
-        
-        await saveToAPI('about', aboutData);
-        await saveToAPI('features', features);
     }
 
-    async function saveServicesSection() {
-        const sectionData = {
-            section_title: document.getElementById('servicesTitle').value,
-            section_subtitle: document.getElementById('servicesSubtitle').value,
-            section_description: document.getElementById('servicesDescription').value
-        };
-        
+    function collectServices() {
         const services = [];
-        document.querySelectorAll('.service-item').forEach(item => {
+        document.querySelectorAll('.service-item').forEach((item, i) => {
             services.push({
-                id: item.dataset.id || null,
+                id: i + 1,
                 icon: item.querySelector('.service-icon').value,
                 title: item.querySelector('.service-title').value,
                 description: item.querySelector('.service-description').value
             });
         });
-
-        await saveToAPI('services-section', sectionData);
-        await saveToAPI('services', services);
+        return {
+            services_section: {
+                section_title: document.getElementById('servicesTitle').value,
+                section_subtitle: document.getElementById('servicesSubtitle').value,
+                section_description: document.getElementById('servicesDescription').value
+            },
+            services
+        };
     }
 
-    async function savePortfolioSection() {
-        const sectionData = {
-            section_title: document.getElementById('portfolioTitle').value,
-            section_subtitle: document.getElementById('portfolioSubtitle').value,
-            section_description: document.getElementById('portfolioDescription').value
-        };
-        
-        const portfolio = [];
-        
-        // Add featured project
-        portfolio.push({
+    function collectPortfolio() {
+        const portfolio = [{
+            id: 1,
             image_path: document.getElementById('featuredImage').value,
             category: document.getElementById('featuredCategory').value,
             title: document.getElementById('featuredTitle').value,
             description: document.getElementById('featuredDescription').value,
             is_featured: 1
-        });
-        
-        // Add regular projects
-        document.querySelectorAll('.project-item').forEach(item => {
+        }];
+        document.querySelectorAll('.project-item').forEach((item, i) => {
             portfolio.push({
-                id: item.dataset.id || null,
+                id: i + 2,
                 image_path: item.querySelector('.project-image').value,
                 category: item.querySelector('.project-category').value,
                 title: item.querySelector('.project-title').value,
@@ -395,591 +407,317 @@ document.addEventListener('DOMContentLoaded', function() {
                 is_featured: 0
             });
         });
-
-        await saveToAPI('portfolio-section', sectionData);
-        await saveToAPI('portfolio', portfolio);
+        return {
+            portfolio_section: {
+                section_title: document.getElementById('portfolioTitle').value,
+                section_subtitle: document.getElementById('portfolioSubtitle').value,
+                section_description: document.getElementById('portfolioDescription').value
+            },
+            portfolio
+        };
     }
 
-    async function saveContactSection() {
-        const data = {
+    function collectContact() {
+        return {
             section_title: document.getElementById('contactTitle').value,
             section_subtitle: document.getElementById('contactSubtitle').value,
             section_description: document.getElementById('contactDescription').value,
             form_email: document.getElementById('contactFormEmail').value
         };
-        
-        await saveToAPI('contact', data);
     }
 
-    async function saveFooterSection() {
-        const footerData = {
-            description: document.getElementById('footerDescription').value,
-            copyright_text: document.getElementById('footerCopyright').value
-        };
-        
-        const socialData = {
-            facebook: document.getElementById('socialFacebook').value,
-            twitter: document.getElementById('socialTwitter').value,
-            linkedin: document.getElementById('socialLinkedin').value,
-            instagram: document.getElementById('socialInstagram').value
-        };
-        
-        await saveToAPI('footer', footerData);
-        await saveToAPI('social', socialData);
-    }
-
-    // Generic save to API
-    async function saveToAPI(section, data) {
-        try {
-            const response = await fetch(`api/content.php?section=${section}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            
-            const result = await response.json();
-            
-            if (result.success) {
-                showSuccessToast(result.message || 'Saved successfully!');
-            } else {
-                showError(result.message || 'Failed to save');
+    function collectFooter() {
+        return {
+            footer: {
+                description: document.getElementById('footerDescription').value,
+                copyright_text: document.getElementById('footerCopyright').value
+            },
+            social: {
+                facebook: document.getElementById('socialFacebook').value,
+                twitter: document.getElementById('socialTwitter').value,
+                linkedin: document.getElementById('socialLinkedin').value,
+                instagram: document.getElementById('socialInstagram').value
             }
-        } catch (error) {
-            showError('Error saving: ' + error.message);
+        };
+    }
+
+    // ========================================
+    // SAVE SECTION TO LOCALSTORAGE
+    // ========================================
+
+    function saveSection(section) {
+        const content = getCurrentContent();
+
+        if (section === 'company') {
+            content.company = collectCompany();
+        } else if (section === 'hero') {
+            content.hero = collectHero();
+        } else if (section === 'about') {
+            const { about, features } = collectAbout();
+            content.about = about;
+            content.features = features;
+        } else if (section === 'services') {
+            const { services_section, services } = collectServices();
+            content.services_section = services_section;
+            content.services = services;
+        } else if (section === 'portfolio') {
+            const { portfolio_section, portfolio } = collectPortfolio();
+            content.portfolio_section = portfolio_section;
+            content.portfolio = portfolio;
+        } else if (section === 'contact') {
+            content.contact = collectContact();
+        } else if (section === 'footer') {
+            const { footer, social } = collectFooter();
+            content.footer = footer;
+            content.social = social;
         }
+
+        saveContent(content);
+        showSuccessToast('Saved! Click "Preview Site" to see changes.');
     }
 
-    // Event Listeners
+    function saveAllSections() {
+        const content = getCurrentContent();
+        content.company = collectCompany();
+        content.hero = collectHero();
+        const { about, features } = collectAbout();
+        content.about = about;
+        content.features = features;
+        const { services_section, services } = collectServices();
+        content.services_section = services_section;
+        content.services = services;
+        const { portfolio_section, portfolio } = collectPortfolio();
+        content.portfolio_section = portfolio_section;
+        content.portfolio = portfolio;
+        content.contact = collectContact();
+        const { footer, social } = collectFooter();
+        content.footer = footer;
+        content.social = social;
+        saveContent(content);
+        showSuccessToast('All changes saved!');
+    }
+
+    // ========================================
+    // PUBLISH — download content.json
+    // ========================================
+
+    function publishContent() {
+        const content = getCurrentContent();
+        const json = JSON.stringify(content, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'content.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        showSuccessToast('content.json downloaded! Commit & push it to go live.');
+    }
+
+    // ========================================
+    // EVENT LISTENERS
+    // ========================================
+
     function setupEventListeners() {
-        // Save buttons
+        // Section save buttons
         document.querySelectorAll('.save-section').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const section = this.dataset.section;
-                const saveFunctions = {
-                    company: saveCompanySection,
-                    hero: saveHeroSection,
-                    about: saveAboutSection,
-                    services: saveServicesSection,
-                    portfolio: savePortfolioSection,
-                    contact: saveContactSection,
-                    footer: saveFooterSection
-                };
-                if (saveFunctions[section]) {
-                    saveFunctions[section]();
-                }
+            btn.addEventListener('click', function () {
+                saveSection(this.dataset.section);
             });
         });
 
-        // Save all button
-        document.getElementById('saveAllBtn').addEventListener('click', async function() {
-            await saveCompanySection();
-            await saveHeroSection();
-            await saveAboutSection();
-            await saveServicesSection();
-            await savePortfolioSection();
-            await saveContactSection();
-            await saveFooterSection();
-            showSuccessToast('All changes saved successfully!');
+        // Save all
+        document.getElementById('saveAllBtn').addEventListener('click', saveAllSections);
+
+        // Preview site
+        document.getElementById('refreshPreviewBtn').addEventListener('click', function () {
+            window.open('index.html?preview=1', '_blank');
         });
 
-        // Logout button
-        document.getElementById('logoutBtn').addEventListener('click', async function() {
-            try {
-                await fetch('api/auth.php?action=logout');
-                window.location.href = 'cms-login.html';
-            } catch (error) {
-                console.error('Logout error:', error);
-                window.location.href = 'cms-login.html';
+        // Publish button
+        document.getElementById('publishBtn').addEventListener('click', publishContent);
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', function () {
+            sessionStorage.removeItem(CMS_AUTH_KEY);
+            window.location.href = 'cms-login.html';
+        });
+
+        // Export data
+        document.getElementById('exportBtn').addEventListener('click', publishContent);
+
+        // Import data
+        document.getElementById('importBtn').addEventListener('click', function () {
+            document.getElementById('importFile').click();
+        });
+        document.getElementById('importFile').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function (ev) {
+                try {
+                    const data = JSON.parse(ev.target.result);
+                    saveContent(data);
+                    loadAllSections();
+                    showSuccessToast('Content imported successfully!');
+                } catch (err) {
+                    alert('Invalid JSON file. Please import a valid content.json file.');
+                }
+            };
+            reader.readAsText(file);
+            this.value = '';
+        });
+
+        // Reset to default
+        document.getElementById('resetBtn').addEventListener('click', function () {
+            if (confirm('Reset all content to defaults? This cannot be undone.')) {
+                saveContent(getDefaultContent());
+                loadAllSections();
+                showSuccessToast('Content reset to defaults.');
             }
         });
 
-        // Add service button
-        document.getElementById('addServiceBtn').addEventListener('click', function() {
+        // Add service
+        document.getElementById('addServiceBtn').addEventListener('click', function () {
             const container = document.getElementById('servicesContainer');
             const index = container.children.length;
-            const newService = {
-                id: null,
-                icon: 'fas fa-cog',
-                title: 'New Service',
-                description: 'Service description'
-            };
-            container.innerHTML += createServiceItem(newService, index);
+            container.innerHTML += createServiceItem({ icon: 'fas fa-cog', title: 'New Service', description: 'Service description' }, index);
         });
 
-        // Add project button
-        document.getElementById('addProjectBtn').addEventListener('click', function() {
+        // Add project
+        document.getElementById('addProjectBtn').addEventListener('click', function () {
             const container = document.getElementById('projectsContainer');
             const index = container.children.length;
-            const newProject = {
-                id: null,
-                image_path: 'img/project.jpg',
-                category: 'Category',
-                title: 'New Project',
-                description: 'Project description'
-            };
-            container.innerHTML += createProjectItem(newProject, index);
+            container.innerHTML += createProjectItem({ image_path: 'img/project.jpg', category: 'Category', title: 'New Project', description: 'Project description' }, index);
         });
     }
 
-    // Global delete functions
-    window.deleteService = async function(id) {
+    // ========================================
+    // DELETE HELPERS (global for inline onclick)
+    // ========================================
+
+    window.deleteServiceItem = function (index) {
         if (confirm('Delete this service?')) {
-            try {
-                const response = await fetch(`api/content.php?section=services&id=${id}`, {
-                    method: 'DELETE'
-                });
-                const result = await response.json();
-                if (result.success) {
-                    loadAllSections();
-                    showSuccessToast('Service deleted!');
-                }
-            } catch (error) {
-                showError('Error deleting service');
-            }
+            const content = getCurrentContent();
+            content.services.splice(index, 1);
+            saveContent(content);
+            loadServicesSection(content.services_section, content.services);
+            showSuccessToast('Service deleted.');
         }
     };
 
-    window.deleteProject = async function(id) {
+    window.deleteProjectItem = function (index) {
         if (confirm('Delete this project?')) {
-            try {
-                const response = await fetch(`api/content.php?section=portfolio&id=${id}`, {
-                    method: 'DELETE'
-                });
-                const result = await response.json();
-                if (result.success) {
-                    loadAllSections();
-                    showSuccessToast('Project deleted!');
-                }
-            } catch (error) {
-                showError('Error deleting project');
-            }
+            const content = getCurrentContent();
+            const nonFeatured = content.portfolio.filter(p => p.is_featured != 1);
+            nonFeatured.splice(index, 1);
+            const featured = content.portfolio.filter(p => p.is_featured == 1);
+            content.portfolio = [...featured, ...nonFeatured];
+            saveContent(content);
+            loadPortfolioSection(content.portfolio_section, content.portfolio);
+            showSuccessToast('Project deleted.');
         }
     };
 
-    // Success toast
-    function showSuccessToast(message = 'Changes saved successfully!') {
+    // ========================================
+    // TOAST & SCROLL
+    // ========================================
+
+    function showSuccessToast(message) {
         const toast = document.getElementById('successToast');
         toast.querySelector('span').textContent = message;
         toast.classList.add('show');
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
+        setTimeout(() => toast.classList.remove('show'), 3500);
     }
-
-    // Error message
-    function showError(message) {
-        alert('Error: ' + message);
-        console.error(message);
-    }
-
-    // ========================================
-    // IMAGE UPLOAD FUNCTIONALITY
-    // ========================================
-
-    /**
-     * Setup image upload handlers
-     */
-    function setupImageUpload() {
-        // Featured image upload
-        const featuredImageUpload = document.getElementById('featuredImageUpload');
-        if (featuredImageUpload) {
-            featuredImageUpload.addEventListener('change', function() {
-                handleImageUpload(this, 'featuredImage', 'featuredImagePreview');
-            });
-        }
-
-        // Listen for dynamically added project image uploads
-        document.addEventListener('change', function(e) {
-            if (e.target.classList.contains('project-image-upload')) {
-                const projectItem = e.target.closest('.project-item');
-                const pathInput = projectItem.querySelector('.project-image');
-                const previewId = e.target.getAttribute('data-preview-id');
-                handleImageUpload(e.target, null, previewId, pathInput);
-            }
-        });
-    }
-
-    /**
-     * Handle image file upload
-     */
-    async function handleImageUpload(fileInput, pathInputId, previewId, customPathInput) {
-        const file = fileInput.files[0];
-        if (!file) return;
-
-        // Validate file type
-        if (!file.type.startsWith('image/')) {
-            showError('Please select an image file');
-            fileInput.value = '';
-            return;
-        }
-
-        // Validate file size (5MB max)
-        if (file.size > 5 * 1024 * 1024) {
-            showError('Image file size must be less than 5MB');
-            fileInput.value = '';
-            return;
-        }
-
-        try {
-            // Show uploading state
-            const pathInput = customPathInput || document.getElementById(pathInputId);
-            if (pathInput) {
-                pathInput.value = 'Uploading...';
-                pathInput.disabled = true;
-            }
-
-            // Create form data
-            const formData = new FormData();
-            formData.append('image', file);
-
-            // Upload to server
-            const response = await fetch('api/upload.php', {
-                method: 'POST',
-                body: formData
-            });
-
-            const result = await response.json();
-
-            if (result.success) {
-                // Update path input
-                if (pathInput) {
-                    pathInput.value = result.data.path;
-                    pathInput.disabled = false;
-                }
-
-                // Show preview
-                showImagePreview(result.data.path, previewId);
-                
-                showSuccessToast('Image uploaded successfully!');
-            } else {
-                throw new Error(result.message || 'Upload failed');
-            }
-        } catch (error) {
-            showError('Error uploading image: ' + error.message);
-            const pathInput = customPathInput || document.getElementById(pathInputId);
-            if (pathInput) {
-                pathInput.value = '';
-                pathInput.disabled = false;
-            }
-        }
-
-        // Reset file input
-        fileInput.value = '';
-    }
-
-    /**
-     * Show image preview
-     */
-    function showImagePreview(imagePath, previewId) {
-        const preview = document.getElementById(previewId);
-        if (preview) {
-            preview.innerHTML = `<img src="${imagePath}" alt="Preview">`;
-            preview.classList.remove('empty');
-        }
-    }
-
-
-
-    // Initialize image upload when page loads
-    setupImageUpload();
-
-    // ========================================
-    // RESPONSIVE SCROLL BEHAVIOR
-    // ========================================
 
     function setupScrollBehavior() {
         let lastScrollTop = 0;
         let scrollTimeout;
         const sidebar = document.querySelector('.cms-sidebar');
-        const header = document.querySelector('.cms-header');
-        
         if (!sidebar) return;
 
-        window.addEventListener('scroll', function() {
-            // Clear previous timeout
+        window.addEventListener('scroll', function () {
             clearTimeout(scrollTimeout);
-            
-            // Set timeout to add scrolling class
-            scrollTimeout = setTimeout(function() {
+            scrollTimeout = setTimeout(function () {
                 const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-                
-                // Only apply on mobile (check if sidebar has mobile styles)
                 if (window.innerWidth <= 480) {
                     if (currentScroll > lastScrollTop && currentScroll > 60) {
-                        // Scrolling down
                         sidebar.classList.add('nav-hidden');
-                        if (header) header.style.marginTop = '0';
                     } else {
-                        // Scrolling up
                         sidebar.classList.remove('nav-hidden');
                     }
                 } else {
-                    // Remove class on desktop
                     sidebar.classList.remove('nav-hidden');
                 }
-                
                 lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
             }, 100);
         }, { passive: true });
 
-        // Also handle on resize
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 480) {
-                sidebar.classList.remove('nav-hidden');
-                if (header) header.style.marginTop = '';
-            }
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 480) sidebar.classList.remove('nav-hidden');
         });
     }
 
     // ========================================
-    // HELP & FAQ SYSTEM
+    // HELP & FAQ
     // ========================================
 
     const faqData = [
-        {
-            category: 'getting-started',
-            question: 'What is the CMS?',
-            answer: '<p>The CMS (Content Management System) is a web-based admin panel that lets you edit all your website content without touching any code. You can update text, images, services, portfolio items, and more.</p>'
-        },
-        {
-            category: 'getting-started',
-            question: 'What do I need to use the CMS?',
-            answer: '<p>You need:</p><ul><li>XAMPP running (Apache and MySQL services)</li><li>A web browser (Chrome, Firefox, Edge)</li><li>Your login credentials</li><li>Internet connection (for icons and fonts)</li></ul>'
-        },
-        {
-            category: 'login',
-            question: 'What are the default login credentials?',
-            answer: '<p><strong>Username:</strong> <code>admin</code><br><strong>Password:</strong> <code>constratech2025</code></p><div class="alert alert-warning">⚠️ <strong>IMPORTANT:</strong> Change these credentials after first login for security!</div>'
-        },
-        {
-            category: 'login',
-            question: 'I forgot my password, what do I do?',
-            answer: '<p>Run this command in MySQL to reset to default:</p><pre>UPDATE admin_users \nSET password_hash = \'$2y$10$PbONpiQu0PJTn0Hfe1zbJuZwRvLQF2XvnxjhEgs198brJvQ/2/KxK\' \nWHERE username = \'admin\';</pre><p>Then login with password: <code>constratech2025</code></p>'
-        },
-        {
-            category: 'login',
-            question: 'Why can\'t I login?',
-            answer: '<p>Check these:</p><ul><li>Is XAMPP running? (Both Apache and MySQL must be green)</li><li>Are you using the correct credentials?</li><li>Clear your browser cache and try again</li><li>Check browser console (F12) for error messages</li></ul>'
-        },
-        {
-            category: 'content',
-            question: 'How do I save my changes?',
-            answer: '<p>Click the blue <strong>"Save"</strong> button at the bottom of each section. Changes are saved to the database and appear on the website immediately.</p>'
-        },
-        {
-            category: 'content',
-            question: 'Do changes appear immediately on the website?',
-            answer: '<p>Yes! Once you click Save, refresh your website to see the changes. Use <strong>Ctrl+F5</strong> for a hard refresh if needed.</p>'
-        },
-        {
-            category: 'content',
-            question: 'What sections can I edit?',
-            answer: '<p>You can edit:</p><ul><li><strong>Company Info:</strong> Name, tagline, contact details, logo</li><li><strong>Hero Section:</strong> Main banner text, images, buttons</li><li><strong>About Section:</strong> Company story, features, images</li><li><strong>Services:</strong> All service offerings</li><li><strong>Portfolio:</strong> Projects and gallery images</li><li><strong>Contact Info:</strong> Phone, email, address, map</li><li><strong>Footer:</strong> Social media links, copyright text</li></ul>'
-        },
-        {
-            category: 'images',
-            question: 'How do I upload images?',
-            answer: '<p>Follow these steps:</p><ol><li>Navigate to the section (e.g., Portfolio)</li><li>Click the <strong>"Upload Image"</strong> button</li><li>Select your image file (JPG, PNG, GIF, or WebP)</li><li>Wait for upload confirmation</li><li>Image path will auto-fill</li><li>Click "Save" to apply changes</li></ol>'
-        },
-        {
-            category: 'images',
-            question: 'What image formats are supported?',
-            answer: '<p>Supported formats:</p><ul><li>JPEG/JPG</li><li>PNG</li><li>GIF</li><li>WebP</li></ul><p><strong>Maximum file size:</strong> 5MB per image</p>'
-        },
-        {
-            category: 'images',
-            question: 'Why is my uploaded image not showing?',
-            answer: '<p>Check these:</p><ul><li>Did you click "Save" after uploading?</li><li>Refresh your website page (Ctrl+F5)</li><li>Check browser console for errors (F12)</li><li>Verify the image uploaded (check uploads/ folder)</li><li>Make sure XAMPP Apache is running</li></ul>'
-        },
-        {
-            category: 'images',
-            question: 'Where are uploaded images stored?',
-            answer: '<p>All uploaded images are saved in the <code>uploads/</code> folder with unique filenames to prevent conflicts.</p><p>Full path: <code>c:\\xampp\\htdocs\\constratech_trading\\uploads\\</code></p>'
-        },
-        {
-            category: 'portfolio',
-            question: 'How do I add a new portfolio project?',
-            answer: '<p>Follow these steps:</p><ol><li>Login to CMS</li><li>Click <strong>"Portfolio"</strong> in sidebar</li><li>Click <strong>"Add Project"</strong> button</li><li>Click <strong>"Upload Image"</strong> and select your image</li><li>Fill in Category, Title, Description</li><li>Click <strong>"Save Portfolio"</strong></li></ol>'
-        },
-        {
-            category: 'portfolio',
-            question: 'What\'s a Featured Project?',
-            answer: '<p>The Featured Project is displayed prominently on your homepage. It\'s larger than other projects. You should use your best/most important project here.</p>'
-        },
-        {
-            category: 'portfolio',
-            question: 'How many portfolio items can I have?',
-            answer: '<p>Unlimited! But the homepage shows only the first 6 items. All items appear on the gallery page.</p>'
-        },
-        {
-            category: 'portfolio',
-            question: 'Can I organize projects by category?',
-            answer: '<p>Yes! Enter categories like:</p><ul><li>Construction</li><li>Solar Installation</li><li>Drilling</li><li>Excavation</li><li>Infrastructure</li></ul><p>Categories appear as tags on the website.</p>'
-        },
-        {
-            category: 'troubleshooting',
-            question: 'The CMS is loading but nothing happens when I click buttons',
-            answer: '<p>Try these solutions:</p><ul><li>Check browser console (F12) for JavaScript errors</li><li>Clear browser cache (Ctrl+Shift+Delete)</li><li>Make sure JavaScript is enabled</li><li>Try a different browser</li></ul>'
-        },
-        {
-            category: 'troubleshooting',
-            question: 'I get "Failed to save" error',
-            answer: '<p>Check these:</p><ul><li>Is MySQL running in XAMPP?</li><li>Verify database connection in api/config.php</li><li>Check browser console for specific error</li><li>Ensure api/ folder has proper permissions</li></ul>'
-        },
-        {
-            category: 'troubleshooting',
-            question: 'Images show in CMS but not on website',
-            answer: '<p>Try these fixes:</p><ul><li>Hard refresh website (Ctrl+F5)</li><li>Check image paths don\'t have typos</li><li>Verify images exist in uploads/ folder</li><li>Check browser console for 404 errors</li><li>Ensure Apache is running</li></ul>'
-        },
-        {
-            category: 'troubleshooting',
-            question: 'Changes aren\'t saving',
-            answer: '<p>Verify:</p><ul><li>Click the correct "Save" button for that section</li><li>Wait for success message</li><li>Check MySQL is running</li><li>Look for error messages in browser console</li></ul>'
-        }
+        { category: 'getting-started', question: 'How does this CMS work?', answer: '<p>The CMS saves your changes to your browser\'s local storage. When you\'re happy with your changes, click <strong>Publish to Website</strong> to download a <code>content.json</code> file. Commit and push that file to GitHub — the live site updates in about 1 minute.</p>' },
+        { category: 'getting-started', question: 'What sections can I edit?', answer: '<p>Company Info, Hero, About, Services, Portfolio, Contact, and Footer.</p>' },
+        { category: 'getting-started', question: 'Will my changes break the website?', answer: '<p>No. Your changes are saved locally in your browser. The live website only updates when you push a new <code>content.json</code> to GitHub.</p>' },
+        { category: 'content', question: 'How do I save my changes?', answer: '<p>Click the <strong>Save</strong> button at the bottom of each section. Then use <strong>Preview Site</strong> to check, and <strong>Publish to Website</strong> when ready to go live.</p>' },
+        { category: 'content', question: 'How do I preview my changes?', answer: '<p>Click <strong>Preview Site</strong> in the top bar. This opens your website in a new tab with your unsaved/saved changes visible.</p>' },
+        { category: 'content', question: 'How do I publish to the live website?', answer: '<ol><li>Click <strong>Publish to Website</strong> — this downloads <code>content.json</code></li><li>Move the downloaded file into your project folder (replacing the old one)</li><li>Run: <code>git add content.json && git commit -m "update content" && git push</code></li><li>Wait ~1 minute — done!</li></ol>' },
+        { category: 'images', question: 'How do I change images?', answer: '<p>Add your image file to the <code>img/</code> folder in the project, then type the path (e.g. <code>img/myimage.jpg</code>) into the image path field and save.</p>' },
+        { category: 'troubleshooting', question: 'My changes disappeared', answer: '<p>Changes are saved in your browser\'s localStorage. They can be lost if you clear your browser data. Use <strong>Publish to Website</strong> regularly to keep a backup in <code>content.json</code>.</p>' },
+        { category: 'troubleshooting', question: 'The preview shows old content', answer: '<p>Make sure you clicked <strong>Save</strong> first, then re-open or hard-refresh the preview tab (Ctrl+Shift+R).</p>' },
+        { category: 'login', question: 'How do I change my password?', answer: '<p>Currently the password is set in <code>cms-login.html</code>. Open that file, find the line <code>const STORED_PASSWORD</code> and change it. Then push to GitHub.</p>' }
     ];
 
     function loadHelpContent(category = 'all', searchTerm = '') {
         const helpContent = document.getElementById('helpContent');
         if (!helpContent) return;
 
-        let filteredFAQs = faqData;
+        let filtered = faqData;
+        if (category !== 'all') filtered = filtered.filter(f => f.category === category);
+        if (searchTerm) filtered = filtered.filter(f =>
+            f.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            f.answer.toLowerCase().includes(searchTerm.toLowerCase())
+        );
 
-        // Filter by category
-        if (category !== 'all') {
-            filteredFAQs = filteredFAQs.filter(faq => faq.category === category);
-        }
-
-        // Filter by search term
-        if (searchTerm) {
-            filteredFAQs = filteredFAQs.filter(faq => 
-                faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-        }
-
-        if (filteredFAQs.length === 0) {
-            helpContent.innerHTML = `
-                <div class="no-results">
-                    <i class="fas fa-search"></i>
-                    <p>No results found. Try a different search or category.</p>
-                </div>
-            `;
+        if (filtered.length === 0) {
+            helpContent.innerHTML = '<div class="no-results"><i class="fas fa-search"></i><p>No results found.</p></div>';
             return;
         }
 
-        helpContent.innerHTML = filteredFAQs.map((faq, index) => `
-            <div class="faq-item" data-faq-id="${index}">
-                <div class="faq-question">
-                    <span>${faq.question}</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="faq-answer">
-                    <div class="faq-answer-content">
-                        ${faq.answer}
-                    </div>
-                </div>
-            </div>
-        `).join('');
+        helpContent.innerHTML = filtered.map((faq, i) => `
+            <div class="faq-item" data-faq-id="${i}">
+                <div class="faq-question"><span>${faq.question}</span><i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer"><div class="faq-answer-content">${faq.answer}</div></div>
+            </div>`).join('');
 
-        // Add click handlers
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', function() {
-                const faqItem = this.closest('.faq-item');
-                faqItem.classList.toggle('open');
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', function () {
+                this.closest('.faq-item').classList.toggle('open');
             });
         });
     }
 
-    // Help section event listeners
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('help-cat-btn')) {
-            document.querySelectorAll('.help-cat-btn').forEach(btn => btn.classList.remove('active'));
-            e.target.classList.add('active');
-            const category = e.target.dataset.category;
-            const searchTerm = document.getElementById('helpSearch')?.value || '';
-            loadHelpContent(category, searchTerm);
+    document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('help-cat-btn') || e.target.closest('.help-cat-btn')) {
+            const btn = e.target.closest('.help-cat-btn');
+            document.querySelectorAll('.help-cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            loadHelpContent(btn.dataset.category, document.getElementById('helpSearch')?.value || '');
         }
     });
 
     const helpSearch = document.getElementById('helpSearch');
     if (helpSearch) {
-        helpSearch.addEventListener('input', function() {
-            const category = document.querySelector('.help-cat-btn.active')?.dataset.category || 'all';
-            loadHelpContent(category, this.value);
+        helpSearch.addEventListener('input', function () {
+            const cat = document.querySelector('.help-cat-btn.active')?.dataset.category || 'all';
+            loadHelpContent(cat, this.value);
         });
-    }
-
-    // ========================================
-    // USER MANAGEMENT
-    // ========================================
-
-    async function loadUsers() {
-        console.log('loadUsers function called');
-        try {
-            const response = await fetch('api/auth.php?action=get-users', {
-                method: 'GET',
-                credentials: 'same-origin',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            console.log('Response status:', response.status);
-            const result = await response.json();
-            console.log('API Result:', result);
-
-            if (result.success && result.data) {
-                console.log('Users data:', result.data);
-                displayUsers(result.data);
-            } else {
-                console.log('No users or error:', result.message);
-                document.getElementById('usersContainer').innerHTML = `<p>${result.message || 'No users found or unable to load users.'}</p>`;
-            }
-        } catch (error) {
-            console.error('Error loading users:', error);
-            document.getElementById('usersContainer').innerHTML = '<p>Error loading users. Check console for details.</p>';
-        }
-    }
-
-    function displayUsers(users) {
-        const container = document.getElementById('usersContainer');
-        
-        if (!users || users.length === 0) {
-            container.innerHTML = '<p>No users found.</p>';
-            return;
-        }
-
-        container.innerHTML = users.map(user => `
-            <div class="user-card">
-                <div class="user-avatar">
-                    <i class="fas fa-user-circle"></i>
-                </div>
-                <div class="user-info">
-                    <h3>${user.full_name || user.username}</h3>
-                    <p class="user-email">${user.email || 'No email'}</p>
-                    <p class="user-username"><i class="fas fa-user"></i> ${user.username}</p>
-                    <p class="user-date"><i class="fas fa-calendar"></i> Joined: ${formatDate(user.created_at)}</p>
-                    ${user.last_login ? `<p class="user-last-login"><i class="fas fa-clock"></i> Last login: ${formatDate(user.last_login)}</p>` : ''}
-                </div>
-                <div class="user-status">
-                    <span class="status-badge ${user.is_active ? 'active' : 'inactive'}">
-                        ${user.is_active ? 'Active' : 'Inactive'}
-                    </span>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function formatDate(dateString) {
-        if (!dateString) return 'Never';
-        const date = new Date(dateString);
-        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-    }
-
-    // Refresh users button
-    const refreshUsersBtn = document.getElementById('refreshUsersBtn');
-    if (refreshUsersBtn) {
-        refreshUsersBtn.addEventListener('click', loadUsers);
     }
 });

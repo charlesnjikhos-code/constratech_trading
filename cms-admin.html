@@ -7,23 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="cms-admin.css">
     <script>
-        // Check PHP session authentication
-        async function checkAuth() {
-            try {
-                const response = await fetch('api/auth.php?action=check');
-                const result = await response.json();
-                
-                if (!result.success) {
-                    window.location.href = 'cms-login.html';
-                }
-            } catch (error) {
-                console.error('Auth check failed:', error);
-                window.location.href = 'cms-login.html';
-            }
+        if (!sessionStorage.getItem('cms_logged_in')) {
+            window.location.href = 'cms-login.html';
         }
-        
-        // Run auth check immediately
-        checkAuth();
     </script>
 </head>
 <body>
@@ -68,10 +54,6 @@
                     <i class="fas fa-align-center"></i>
                     <span>Footer</span>
                 </a>
-                <a href="#" class="cms-nav-link" data-section="users">
-                    <i class="fas fa-users"></i>
-                    <span>User Management</span>
-                </a>
                 <a href="#" class="cms-nav-link" data-section="help">
                     <i class="fas fa-question-circle"></i>
                     <span>Help & FAQ</span>
@@ -109,6 +91,9 @@
                     </button>
                     <button class="btn-success" id="saveAllBtn">
                         <i class="fas fa-save"></i> Save All Changes
+                    </button>
+                    <button class="btn-publish" id="publishBtn" title="Download content.json and push to GitHub to go live">
+                        <i class="fas fa-rocket"></i> Publish to Website
                     </button>
                 </div>
             </header>
@@ -400,24 +385,6 @@
                     <button class="btn-primary save-section" data-section="footer">
                         <i class="fas fa-save"></i> Save Footer
                     </button>
-                </section>
-
-                <!-- User Management Section -->
-                <section id="users-section" class="content-section">
-                    <div class="users-header">
-                        <h2><i class="fas fa-users"></i> User Management</h2>
-                        <p>Manage admin users and permissions</p>
-                    </div>
-
-                    <div class="users-actions">
-                        <button class="btn-primary" id="refreshUsersBtn">
-                            <i class="fas fa-sync"></i> Refresh
-                        </button>
-                    </div>
-
-                    <div id="usersContainer" class="users-grid">
-                        <!-- Users will be loaded here -->
-                    </div>
                 </section>
 
                 <!-- Help & FAQ Section -->
