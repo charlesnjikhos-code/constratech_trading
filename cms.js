@@ -76,7 +76,7 @@ async function loadPageContent() {
         }
     }
 
-    // About section
+    // About section — homepage block
     if (content.about) {
         const a = content.about;
         const title = document.querySelector('.intro-text .section-title');
@@ -86,10 +86,50 @@ async function loadPageContent() {
 
         if (title && a.title) title.textContent = a.title;
         if (tag && a.subtitle) tag.textContent = a.subtitle;
-        if (desc && a.description) {
-            desc.innerHTML = a.description;
-        }
+        if (desc && a.description) desc.innerHTML = a.description;
         if (img && a.image_path) img.src = a.image_path;
+
+        // About page hero
+        const heroH1 = document.querySelector('.about-hero-content h1');
+        const heroP = document.querySelector('.about-hero-content p');
+        if (heroH1 && a.hero_title) heroH1.textContent = a.hero_title;
+        if (heroP && a.hero_subtitle) heroP.textContent = a.hero_subtitle;
+
+        // Who We Are paragraphs
+        const overviewPs = document.querySelectorAll('.overview-content p');
+        if (overviewPs[0] && a.overview_paragraph1) overviewPs[0].textContent = a.overview_paragraph1;
+        if (overviewPs[1] && a.overview_paragraph2) overviewPs[1].innerHTML = a.overview_paragraph2;
+        if (overviewPs[2] && a.overview_paragraph3) overviewPs[2].innerHTML = a.overview_paragraph3;
+        const overviewImg = document.querySelector('.overview-image img');
+        if (overviewImg && a.overview_image) overviewImg.src = a.overview_image;
+
+        // Mission & Vision
+        const mvCards = document.querySelectorAll('.mv-card p');
+        if (mvCards[0] && a.mission_text) mvCards[0].textContent = a.mission_text;
+        if (mvCards[1] && a.vision_text) mvCards[1].textContent = a.vision_text;
+
+        // Core Values
+        if (a.values && a.values.length > 0) {
+            const valueCards = document.querySelectorAll('.value-card');
+            valueCards.forEach((card, i) => {
+                if (!a.values[i]) return;
+                const h4 = card.querySelector('h4');
+                const p = card.querySelector('p');
+                if (h4) h4.textContent = a.values[i].title;
+                if (p) p.textContent = a.values[i].description;
+            });
+        }
+
+        // CTA banner
+        const ctaH2 = document.querySelector('.about-cta h2');
+        const ctaP = document.querySelector('.about-cta p');
+        const ctaBtn = document.querySelector('.about-cta .cta-button');
+        if (ctaH2 && a.cta_title) ctaH2.textContent = a.cta_title;
+        if (ctaP && a.cta_description) ctaP.textContent = a.cta_description;
+        if (ctaBtn) {
+            if (a.cta_button_text) ctaBtn.textContent = a.cta_button_text;
+            if (a.cta_link) ctaBtn.href = a.cta_link;
+        }
     }
 
     // Feature boxes

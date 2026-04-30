@@ -13,10 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    loadAllSections();
-    setupNavigation();
-    setupEventListeners();
-    setupScrollBehavior();
+    try { loadAllSections(); } catch (e) { console.error('loadAllSections failed:', e); }
+    try { setupNavigation(); } catch (e) { console.error('setupNavigation failed:', e); }
+    try { setupEventListeners(); } catch (e) { console.error('setupEventListeners failed:', e); }
+    try { setupScrollBehavior(); } catch (e) { console.error('setupScrollBehavior failed:', e); }
 
     // ========================================
     // DEFAULT CONTENT (mirrors content.json)
@@ -41,9 +41,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 background_image: ''
             },
             about: {
+                hero_title: 'About Constratech Trading',
+                hero_subtitle: 'Building Excellence Since 2015',
+                overview_title: 'Who We Are',
+                overview_paragraph1: 'Constratech Trading is a fully registered and certified construction company operating in Malawi. Established in 2015, we have grown to become a trusted name in the construction industry, delivering high-quality projects across various sectors.',
+                overview_paragraph2: 'We are registered with the Registrar of Companies, the National Construction Industry Council of Malawi (NCIC), the Malawi Revenue Authority, the National Water Resources Authority Ministry, PPDA, and the Ministry of Trade.',
+                overview_paragraph3: 'Our NCIC registration qualifies us for projects up to MK 500 million in both Civil and Building categories, demonstrating our capacity and expertise to handle substantial construction projects.',
+                overview_image: 'img/About_Us.jpg',
+                mission_text: "To deliver exceptional construction and solar power solutions that exceed client expectations through innovation, quality craftsmanship, and sustainable practices. We are committed to building lasting relationships and contributing to Malawi's infrastructure development.",
+                vision_text: "To be the leading construction and renewable energy solutions provider in Malawi, recognized for excellence, innovation, and sustainable development. We aspire to set industry standards and contribute significantly to the nation's economic growth.",
+                values: [
+                    { title: 'Integrity', description: 'We conduct business with the highest standards of honesty, transparency, and ethical behavior, building trust with our clients and partners.' },
+                    { title: 'Excellence', description: 'We strive for excellence in every project, ensuring quality workmanship and attention to detail in all our deliverables.' },
+                    { title: 'Customer Focus', description: 'Our clients are at the heart of everything we do. We prioritize their needs, ensuring satisfaction through personalized and reliable solutions.' },
+                    { title: 'Collaboration', description: 'We foster a collaborative environment, encouraging teamwork and partnerships to achieve mutual success and outstanding results.' },
+                    { title: 'Sustainability', description: 'We integrate eco-friendly practices into our designs and operations, contributing to a greener and more sustainable future for Malawi.' },
+                    { title: 'Innovation', description: 'We embrace innovation and continuously seek better solutions to meet evolving industry challenges and client needs.' }
+                ],
+                cta_title: 'Ready to Start Your Project?',
+                cta_description: "Let's discuss how we can bring your construction vision to life.",
+                cta_button_text: 'Get In Touch',
+                cta_link: 'contact.html',
                 title: "Building Malawi's Future, One Project at a Time",
                 subtitle: 'About Us',
-                description: 'Established in 2015, Constratech Trading has become a trusted name in Malawi\'s construction industry. We are fully registered with all major regulatory bodies including NCIC, Malawi Revenue Authority, PPDA, and the Ministry of Trade.',
+                description: "Established in 2015, Constratech Trading has become a trusted name in Malawi's construction industry.",
                 image_path: 'img/About_Us.jpg'
             },
             features: [
@@ -146,13 +167,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function loadAllSections() {
         const content = loadContent();
-        loadCompanySection(content.company);
-        loadHeroSection(content.hero);
-        loadAboutSection(content.about, content.features);
-        loadServicesSection(content.services_section, content.services);
-        loadPortfolioSection(content.portfolio_section, content.portfolio);
-        loadContactSection(content.contact);
-        loadFooterSection(content.footer, content.social);
+        try { loadCompanySection(content.company); } catch (e) { console.warn('company', e); }
+        try { loadHeroSection(content.hero); } catch (e) { console.warn('hero', e); }
+        try { loadAboutSection(content.about, content.features); } catch (e) { console.warn('about', e); }
+        try { loadServicesSection(content.services_section, content.services); } catch (e) { console.warn('services', e); }
+        try { loadPortfolioSection(content.portfolio_section, content.portfolio); } catch (e) { console.warn('portfolio', e); }
+        try { loadContactSection(content.contact); } catch (e) { console.warn('contact', e); }
+        try { loadFooterSection(content.footer, content.social); } catch (e) { console.warn('footer', e); }
     }
 
     function loadCompanySection(data) {
@@ -175,16 +196,56 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('heroBackgroundImage').value = data.background_image || '';
     }
 
+    function setVal(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.value = val || '';
+    }
+
     function loadAboutSection(about, features) {
         if (!about) return;
-        document.getElementById('aboutTitle').value = about.title || '';
-        document.getElementById('aboutSubtitle').value = about.subtitle || '';
-        document.getElementById('aboutDescription').value = about.description || '';
-        document.getElementById('aboutImage').value = about.image_path || '';
+        // About page fields
+        setVal('aboutHeroTitle', about.hero_title);
+        setVal('aboutHeroSubtitle', about.hero_subtitle);
+        setVal('aboutParagraph1', about.overview_paragraph1);
+        setVal('aboutParagraph2', about.overview_paragraph2);
+        setVal('aboutParagraph3', about.overview_paragraph3);
+        setVal('aboutImage', about.overview_image || about.image_path);
+        setVal('aboutMission', about.mission_text);
+        setVal('aboutVision', about.vision_text);
+        setVal('aboutCtaTitle', about.cta_title);
+        setVal('aboutCtaDescription', about.cta_description);
+        setVal('aboutCtaButtonText', about.cta_button_text);
+        setVal('aboutCtaLink', about.cta_link);
+        // Homepage about block fields
+        setVal('aboutTitle', about.title);
+        setVal('aboutSubtitle', about.subtitle);
+        setVal('aboutDescription', about.description);
 
+        // Core values
+        const valuesContainer = document.getElementById('valuesContainer');
+        if (valuesContainer) valuesContainer.innerHTML = '';
+        const values = about.values || [];
+        if (valuesContainer) values.forEach((v, index) => {
+            valuesContainer.innerHTML += `
+                <div class="feature-item">
+                    <h4>Value ${index + 1}</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" class="form-control value-title" value="${v.title || ''}">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Description</label>
+                            <textarea class="form-control value-description" rows="2">${v.description || ''}</textarea>
+                        </div>
+                    </div>
+                </div>`;
+        });
+
+        // Feature boxes (homepage)
         const container = document.getElementById('featuresContainer');
-        container.innerHTML = '';
-        if (features && features.length > 0) {
+        if (container) container.innerHTML = '';
+        if (container && features && features.length > 0) {
             features.forEach((feature, index) => {
                 container.innerHTML += `
                     <div class="feature-item">
@@ -349,8 +410,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function collectAbout() {
+        const values = [];
+        document.querySelectorAll('#valuesContainer .feature-item').forEach(item => {
+            values.push({
+                title: item.querySelector('.value-title').value,
+                description: item.querySelector('.value-description').value
+            });
+        });
         const features = [];
-        document.querySelectorAll('.feature-item').forEach(item => {
+        document.querySelectorAll('#featuresContainer .feature-item').forEach(item => {
             features.push({
                 icon: item.querySelector('.feature-icon').value,
                 title: item.querySelector('.feature-title').value,
@@ -359,6 +427,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         return {
             about: {
+                hero_title: document.getElementById('aboutHeroTitle').value,
+                hero_subtitle: document.getElementById('aboutHeroSubtitle').value,
+                overview_paragraph1: document.getElementById('aboutParagraph1').value,
+                overview_paragraph2: document.getElementById('aboutParagraph2').value,
+                overview_paragraph3: document.getElementById('aboutParagraph3').value,
+                overview_image: document.getElementById('aboutImage').value,
+                mission_text: document.getElementById('aboutMission').value,
+                vision_text: document.getElementById('aboutVision').value,
+                values,
+                cta_title: document.getElementById('aboutCtaTitle').value,
+                cta_description: document.getElementById('aboutCtaDescription').value,
+                cta_button_text: document.getElementById('aboutCtaButtonText').value,
+                cta_link: document.getElementById('aboutCtaLink').value,
                 title: document.getElementById('aboutTitle').value,
                 subtitle: document.getElementById('aboutSubtitle').value,
                 description: document.getElementById('aboutDescription').value,
@@ -498,94 +579,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ========================================
-    // PUBLISH — write content.json directly to project folder
+    // PUBLISH — download content.json
     // ========================================
 
-    const DIR_HANDLE_KEY = 'constratech_project_dir';
-
-    async function getStoredDirHandle() {
-        try {
-            const db = await openDirDB();
-            return await dbGet(db, DIR_HANDLE_KEY);
-        } catch (e) {
-            return null;
-        }
-    }
-
-    async function storeDirHandle(handle) {
-        try {
-            const db = await openDirDB();
-            await dbPut(db, DIR_HANDLE_KEY, handle);
-        } catch (e) {}
-    }
-
-    function openDirDB() {
-        return new Promise((resolve, reject) => {
-            const req = indexedDB.open('constratech_cms_db', 1);
-            req.onupgradeneeded = e => e.target.result.createObjectStore('handles');
-            req.onsuccess = e => resolve(e.target.result);
-            req.onerror = () => reject(req.error);
-        });
-    }
-
-    function dbGet(db, key) {
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction('handles', 'readonly');
-            const req = tx.objectStore('handles').get(key);
-            req.onsuccess = () => resolve(req.result);
-            req.onerror = () => reject(req.error);
-        });
-    }
-
-    function dbPut(db, key, value) {
-        return new Promise((resolve, reject) => {
-            const tx = db.transaction('handles', 'readwrite');
-            const req = tx.objectStore('handles').put(value, key);
-            req.onsuccess = () => resolve();
-            req.onerror = () => reject(req.error);
-        });
-    }
-
-    async function publishContent() {
+    function publishContent() {
         const content = getCurrentContent();
         const json = JSON.stringify(content, null, 2);
-
-        // Use File System Access API if available (Chrome/Edge)
-        if (window.showDirectoryPicker) {
-            try {
-                let dirHandle = await getStoredDirHandle();
-
-                // Check if stored handle still has permission
-                if (dirHandle) {
-                    const perm = await dirHandle.queryPermission({ mode: 'readwrite' });
-                    if (perm !== 'granted') {
-                        const req = await dirHandle.requestPermission({ mode: 'readwrite' });
-                        if (req !== 'granted') dirHandle = null;
-                    }
-                }
-
-                // No stored handle — ask user to pick the project folder
-                if (!dirHandle) {
-                    showSuccessToast('Select your project folder (constratech_trading)…');
-                    dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
-                    await storeDirHandle(dirHandle);
-                }
-
-                // Write content.json directly into the folder
-                const fileHandle = await dirHandle.getFileHandle('content.json', { create: true });
-                const writable = await fileHandle.createWritable();
-                await writable.write(json);
-                await writable.close();
-
-                showSuccessToast('content.json saved to your project folder! Now git push to go live.');
-                return;
-            } catch (e) {
-                if (e.name === 'AbortError') return; // user cancelled picker
-                console.warn('File System Access API failed, falling back to download', e);
-            }
-        }
-
-        // Fallback for Safari / unsupported browsers
         const blob = new Blob([json], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -593,7 +592,7 @@ document.addEventListener('DOMContentLoaded', function () {
         a.download = 'content.json';
         a.click();
         URL.revokeObjectURL(url);
-        showSuccessToast('content.json downloaded — move it to your project folder, then git push.');
+        showSuccessToast('content.json downloaded! Replace the file in your project folder, then git push.');
     }
 
     // ========================================

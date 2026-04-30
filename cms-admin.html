@@ -213,28 +213,92 @@
 
                 <!-- About Section -->
                 <section id="about-section" class="content-section">
+                    <h3 class="subsection-title">Page Hero Banner</h3>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label>About Title</label>
-                            <input type="text" id="aboutTitle" class="form-control">
+                            <label>Hero Title</label>
+                            <input type="text" id="aboutHeroTitle" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label>Subtitle</label>
-                            <input type="text" id="aboutSubtitle" class="form-control">
+                            <label>Hero Subtitle</label>
+                            <input type="text" id="aboutHeroSubtitle" class="form-control">
+                        </div>
+                    </div>
+
+                    <h3 class="subsection-title">Who We Are</h3>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Paragraph 1</label>
+                            <textarea id="aboutParagraph1" class="form-control" rows="3"></textarea>
                         </div>
                         <div class="form-group full-width">
-                            <label>Description</label>
-                            <textarea id="aboutDescription" class="form-control" rows="4"></textarea>
+                            <label>Paragraph 2</label>
+                            <textarea id="aboutParagraph2" class="form-control" rows="3"></textarea>
                         </div>
                         <div class="form-group full-width">
-                            <label>About Image Path</label>
+                            <label>Paragraph 3</label>
+                            <textarea id="aboutParagraph3" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Image Path <small style="color:#64748b">(e.g. img/About_Us.jpg)</small></label>
                             <input type="text" id="aboutImage" class="form-control">
                         </div>
                     </div>
 
-                    <h3 class="subsection-title">Feature Boxes</h3>
+                    <h3 class="subsection-title">Mission &amp; Vision</h3>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label>Mission Statement</label>
+                            <textarea id="aboutMission" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Vision Statement</label>
+                            <textarea id="aboutVision" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <h3 class="subsection-title">Core Values</h3>
+                    <div id="valuesContainer"></div>
+
+                    <h3 class="subsection-title">Call-to-Action Banner</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>CTA Title</label>
+                            <input type="text" id="aboutCtaTitle" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>CTA Description</label>
+                            <input type="text" id="aboutCtaDescription" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Button Text</label>
+                            <input type="text" id="aboutCtaButtonText" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Button Link</label>
+                            <input type="text" id="aboutCtaLink" class="form-control">
+                        </div>
+                    </div>
+
+                    <h3 class="subsection-title">Homepage About Block</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Section Title (homepage)</label>
+                            <input type="text" id="aboutTitle" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Section Tag (homepage)</label>
+                            <input type="text" id="aboutSubtitle" class="form-control">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Description (homepage)</label>
+                            <textarea id="aboutDescription" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <h3 class="subsection-title">Feature Boxes (homepage)</h3>
                     <div id="featuresContainer"></div>
-                    
+
                     <button class="btn-primary save-section" data-section="about">
                         <i class="fas fa-save"></i> Save About Section
                     </button>
@@ -436,7 +500,6 @@
         <span>Changes saved successfully!</span>
     </div>
 
-    <script src="cms.js"></script>
     <script src="cms-admin.js"></script>
 </body>
 </html>

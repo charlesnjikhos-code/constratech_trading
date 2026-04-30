@@ -16,21 +16,59 @@
     "background_image": ""
   },
   "about": {
+    "hero_title": "About Constratech Trading",
+    "hero_subtitle": "Building Excellence Since 2015",
+    "overview_paragraph1": "Constratech Trading is a fully registered and certified construction company delivering comprehensive solutions across Malawi's most demanding sectors. Since 2015, we've earned the trust of major organizations including UNHCR, UNDP, NACRO, FAO, World Vision, Care International, and the Southern Region Water Board by consistently delivering high-quality projects on time and on budget.",
+    "overview_paragraph2": "We offer a complete range of services—from civil and building construction to solar power solutions, borehole drilling, water reticulation and irrigation systems, engineering design, and general supply. This integrated approach means our clients get seamless project delivery, whether it's a complex water system, a solar installation, or major civil works.",
+    "overview_paragraph3": "Our credentials reflect our commitment to excellence. We're registered with the Registrar of Companies, the Construction Industry Regulatory Authority (CIRA), Malawi Revenue Authority, National Water Resources Authority, PPDA, and the Ministry of Trade among others. Our CIRA registration for both Civil and Building categories—CLASS 4 up to MK 500 million each—confirms our capacity to handle substantial, complex projects. More importantly, it reflects the experience and expertise we bring to every job.",
+    "overview_image": "img/About_Us.jpg",
+    "mission_text": "To deliver exceptional construction and solar power solutions that exceed client expectations through innovation, quality craftsmanship, and sustainable practices. We are committed to building lasting relationships and contributing to Malawi's infrastructure development.",
+    "vision_text": "To be the leading construction and renewable energy solutions provider in Malawi, recognized for excellence, innovation, and sustainable development. We aspire to set industry standards and contribute significantly to the nation's economic growth.",
+    "values": [
+      {
+        "title": "Integrity",
+        "description": "We conduct business with the highest standards of honesty, transparency, and ethical behavior, building trust with our clients and partners."
+      },
+      {
+        "title": "Excellence",
+        "description": "We strive for excellence in every project, ensuring quality workmanship and attention to detail in all our deliverables."
+      },
+      {
+        "title": "Customer Focus",
+        "description": "Our clients are at the heart of everything we do. We prioritize their needs, ensuring satisfaction through personalized and reliable solutions."
+      },
+      {
+        "title": "Collaboration",
+        "description": "We foster a collaborative environment, encouraging teamwork and partnerships to achieve mutual success and outstanding results."
+      },
+      {
+        "title": "Sustainability",
+        "description": "We integrate eco-friendly practices into our designs and operations, contributing to a greener and more sustainable future for Malawi."
+      },
+      {
+        "title": "Innovation",
+        "description": "We embrace innovation and continuously seek better solutions to meet evolving industry challenges and client needs."
+      }
+    ],
+    "cta_title": "Ready to Start Your Project?",
+    "cta_description": "Let's discuss how we can bring your construction vision to life.",
+    "cta_button_text": "Get In Touch",
+    "cta_link": "contact.html",
     "title": "Building Malawi's Future, One Project at a Time",
     "subtitle": "About Us",
-    "description": "Established in 2015, Constratech Trading has become a trusted name in Malawi's construction industry. We are fully registered with all major regulatory bodies including NCIC, Malawi Revenue Authority, PPDA, and the Ministry of Trade.",
+    "description": "Established in 2015, Constratech Trading has become a trusted name in Malawi's construction industry.",
     "image_path": "img/About_Us.jpg"
   },
   "features": [
     {
       "icon": "fas fa-hard-hat",
-      "title": "MK 500M Capacity",
+      "title": "CLASS 4: MK 500M Capacity",
       "description": "Qualified for major civil and building projects across Malawi"
     },
     {
       "icon": "fas fa-certificate",
       "title": "Fully Certified",
-      "description": "CIRA registered in Class 4 Civil & Building categories"
+      "description": "CIRA registered in CLASS 4 Civil & Building categories"
     },
     {
       "icon": "fas fa-users",
