@@ -239,3 +239,29 @@ if (document.readyState === 'loading') {
 } else {
     loadPageContent();
 }
+
+// In preview mode, rewrite all internal nav links so ?preview=1 is preserved
+// when clicking through to other pages (e.g. About, Contact).
+if (isPreview) {
+    function addPreviewToLinks() {
+        document.querySelectorAll('a[href]').forEach(function (link) {
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('#') || href.startsWith('tel:') ||
+                href.startsWith('mailto:') || href.startsWith('http') ||
+                href.includes('preview=')) return;
+            if (href.includes('#')) {
+                const parts = href.split('#');
+                link.setAttribute('href', parts[0] + '?preview=1#' + parts[1]);
+            } else if (href.includes('?')) {
+                link.setAttribute('href', href + '&preview=1');
+            } else {
+                link.setAttribute('href', href + '?preview=1');
+            }
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addPreviewToLinks);
+    } else {
+        addPreviewToLinks();
+    }
+}
