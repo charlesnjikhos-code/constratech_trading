@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#0d1117">
+    <title>Zonse Point — Ticket Scanner</title>
+    <link rel="stylesheet" href="scanner.css">
+</head>
+<body>
+<div id="app">
+
+    <!-- ── Header ── -->
+    <header>
+        <div class="brand">
+            <div class="brand-icon">🎫</div>
+            <span>Zonse Point Scanner</span>
+        </div>
+
+        <div id="conn-badge" class="conn-badge online">
+            <div class="conn-dot"></div>
+            <span id="conn-label">Online</span>
+        </div>
+    </header>
+
+    <!-- ── Main content ── -->
+    <main>
+
+        <!-- Event selector -->
+        <div class="card">
+            <div class="card-title">Event</div>
+            <div class="event-row">
+                <div class="field">
+                    <label for="event-select">Select event</label>
+                    <select id="event-select">
+                        <option value="">Loading events…</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" id="btn-download" title="Download ticket list for offline use">
+                    ⬇ Download
+                </button>
+            </div>
+        </div>
+
+        <!-- Scan input (keyboard-wedge / manual) -->
+        <div class="card">
+            <div class="card-title">Scan Ticket</div>
+
+            <div class="scan-input-wrap">
+                <input
+                    type="text"
+                    id="scan-input"
+                    placeholder="Scan QR / barcode or type ticket ID…"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="characters"
+                    spellcheck="false"
+                >
+            </div>
+            <div class="scan-hint">
+                Point a USB or Bluetooth scanner at this screen, or type a ticket ID and press Enter.
+            </div>
+
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <button class="btn btn-ghost" id="btn-camera-toggle">📷 Use Camera</button>
+                <div id="pending-badge" class="pending-badge">
+                    ⚠ <span id="pending-count">0</span> pending sync
+                </div>
+            </div>
+
+            <!-- Camera QR reader (hidden until activated) -->
+            <div id="camera-section" style="margin-top:14px;">
+                <div id="qr-reader" style="width:100%; max-width:480px;"></div>
+            </div>
+        </div>
+
+        <!-- Result display -->
+        <div id="result-display" class="idle">
+            <div class="result-icon" id="result-icon">🎫</div>
+            <div class="result-title" id="result-title">Ready to Scan</div>
+            <div class="result-sub" id="result-sub">Scan a QR code or barcode to validate entry.</div>
+            <div class="result-detail" id="result-detail"></div>
+        </div>
+
+        <!-- Session stats -->
+        <div class="card">
+            <div class="card-title">Session Stats</div>
+            <div class="stats-bar">
+                <div class="stat-box stat-valid">
+                    <div class="stat-value" id="stat-valid">0</div>
+                    <div class="stat-label">Granted</div>
+                </div>
+                <div class="stat-box stat-invalid">
+                    <div class="stat-value" id="stat-invalid">0</div>
+                    <div class="stat-label">Denied</div>
+                </div>
+                <div class="stat-box stat-total">
+                    <div class="stat-value" id="stat-total">0</div>
+                    <div class="stat-label">Total</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Offline controls -->
+        <div class="card">
+            <div class="card-title">Offline Mode</div>
+            <div class="offline-row">
+                <div class="offline-info" id="offline-info">
+                    No offline cache — tap <strong>Download</strong> before the event.
+                </div>
+                <button class="btn btn-warning" id="btn-sync">⬆ Sync</button>
+            </div>
+        </div>
+
+        <!-- Recent scans log -->
+        <div class="card">
+            <div class="card-title">Recent Scans</div>
+            <ul id="scan-log"></ul>
+        </div>
+
+    </main>
+</div>
+
+<!-- Toast notification -->
+<div id="toast"></div>
+
+<!-- html5-qrcode for camera-based QR scanning -->
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js" defer></script>
+<script src="scanner.js" defer></script>
+</body>
+</html>
